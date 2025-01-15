@@ -1,24 +1,26 @@
 import { useState } from "react"
-import buttonsDefault  from '../mocks/buttons.json'
+import usersDefault  from '../mocks/users.json'
 
-export const Buttons = () => {
-    const [buttons, setButtons] = useState(buttonsDefault)
+export const Users = () => {
+    const [users, setUsers] = useState(usersDefault)
   return (
     <div className="container-fluid">
-        <h3>Buttons</h3>
+        <h2>Users</h2>
         <table className="striped">
             <thead>
                 <tr>
                     <th>Name</th>
+                    <th>Email</th>
                     <th>Status</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 {
-                    buttons.map((item, index) => (
+                    users.map((item, index) => (
                         <tr key={index}>
                             <td>{item.name}</td>
+                            <td>{item.email}</td>
                             <td>
                                 {
                                     item.status === 1
