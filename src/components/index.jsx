@@ -1,4 +1,5 @@
 export { Header } from "./Header"
-export {UsersTable} from "./UsersTable"
 export {CustomTable} from "./CustomTable"
 export {CustomActions} from "./CustomActions"
+export {Loading} from "./Loading"
+export {Error} from "./Error"

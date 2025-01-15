@@ -1,8 +1,7 @@
 import { useUsers } from "../hooks/useUsers";
-import { CustomTable, CustomActions } from "../components/index"
 import { useRef } from "react";
+import { CustomTable, CustomActions, Loading, Error } from "../components/index"
 import permissionsDefault  from '../mocks/permissions.json'
-import { useMemo } from "react";
 
 const statusMap = {
     1: 'Active',
@@ -57,30 +56,23 @@ export const Users = () => {
         }
     ]
 
-  return (
-    <div className="container-fluid">
-        <h2>Users</h2>
-        {/* <UsersTable users={resUsers} /> */}
+    if (loading) return <Loading />;
+    if (errorUsers) return <Error />;
 
-        {
-            loading && <p>Loading...</p>
-        }
+    return (
+        <div className="container-fluid">
+            <h2>Users</h2>
+            <CustomTable 
+                columns={columns} 
+                rows={resUsers} 
+                ActionsComponent={(props) => (
+                        <CustomActions
+                            {...props}
+                            permissions={permissionsDefault}
+                            actions={Actions}
 
-        {
-            errorUsers && <p>Error: {errorUsers.message}</p>
-        }
-
-        <CustomTable 
-            columns={columns} 
-            rows={resUsers} 
-            ActionsComponent={(props) => (
-                    <CustomActions
-                        {...props}
-                        permissions={permissionsDefault}
-                        actions={Actions}
-
-                    />
-                )} />
-        </div>  
-    )
+                        />
+                    )} />
+            </div>  
+        )
 }
