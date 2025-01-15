@@ -1,0 +1,5 @@
+[
+    { "key": "activate", "Name": "Activate" },
+    { "key": "deactivate", "Name": "Deactivate" },
+    { "key": "edit", "Name": "Edit" }
+]

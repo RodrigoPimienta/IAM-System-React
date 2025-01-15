@@ -1,7 +1,7 @@
 [
-    { "id": 1, "name": "Juan Pérez", "email": "juan.perez@example.com" },
-    { "id": 2, "name": "María López", "email": "maria.lopez@example.com" },
-    { "id": 3, "name": "Carlos Ruiz", "email": "carlos.ruiz@example.com" },
-    { "id": 4, "name": "Ana Torres", "email": "ana.torres@example.com" }
+    { "id": 1, "name": "Juan Pérez", "email": "juan.perez@example.com", "idProfile":1, "profile": "Administrador",  "status":1 },
+    { "id": 2, "name": "María López", "email": "maria.lopez@example.com", "idProfile":2, "profile": "Auditor", "status":1 },
+    { "id": 3, "name": "Carlos Ruiz", "email": "carlos.ruiz@example.com", "idProfile":3, "profile": "Usuario Regular",  "status":1 },
+    { "id": 4, "name": "Ana Torres", "email": "ana.torres@example.com", "idProfile":1, "profile": "Administrador",  "status":1 }
   ]
   
