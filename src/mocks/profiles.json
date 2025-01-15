@@ -1,0 +1,6 @@
+[
+    { "id": 1, "name": "Administrador" , "status": 1},
+    { "id": 2, "name": "Auditor" , "status": 1},
+    { "id": 3, "name": "Usuario Regular", "status": 0}
+  ]
+  

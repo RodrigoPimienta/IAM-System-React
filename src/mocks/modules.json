@@ -1,0 +1,6 @@
+[
+    { "id": 1, "name": "Gestión de Usuarios", "status": 0 },
+    { "id": 2, "name": "Gestión de Perfiles", "status": 0 },
+    { "id": 3, "name": "Reportes", "status": 1 }
+  ]
+  
