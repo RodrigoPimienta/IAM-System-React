@@ -17,14 +17,6 @@ export const Header = () => {
         </NavLink>
         </li>
         <li>
-            <NavLink
-            to="/access"
-            className={({ isActive }) => (isActive ? "active" : "")}
-        >
-            Access
-        </NavLink>
-        </li>
-        <li>
         <details className="dropdown">
             <summary>
             Catalogs
