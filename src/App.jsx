@@ -1,27 +1,13 @@
-// importar mocks de access
-// import { Home } from "./pages/Home"
-import {Home, Access, Modules, Profiles, Rols, Buttons} from "./pages/index"
 
+import { Header } from "./components/Header"
+import { Outlet } from "react-router";
 
 function App() {
   return (
     <>
-        <header className="container-fluid">
-          <nav>
-            <ul>
-              <li><strong>IAM System</strong></li>
-            </ul>
-            <ul>
-              <li><a href="#">Users</a></li>
-              <li><a href="#">Profiles</a></li>
-              <li><a href="#">Modules</a></li>
-              <li><a href="#">Buttons</a></li>
-            </ul>
-          </nav>
-        </header>
+        <Header />
         <main className="container-fluid">
-            {/* Aqui se supone que ira la seccion principal que seran accesos */}
-            <Home />
+          <Outlet /> {/* Aquí se renderizarán las rutas hijas */}
         </main>
     </>
   )
