@@ -6,7 +6,8 @@ export const CustomActions = ({ row, actions =[], permissions = [] }) => {
         {
             actions.map((action) => {
                 return action.Condition(row) && getPermission(action.key) && (
-                    <button key={action.key} onClick={() => action.Handle(row.id)}>
+                    <button key={action.key} onClick={() => action.Handle(row.id)}
+                        className={`btn btn_${action.key}`}>
                         {getPermission(action.key).Name}
                     </button>
                 );
