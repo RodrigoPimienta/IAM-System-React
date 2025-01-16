@@ -1,8 +1,8 @@
 [
-    { "id": 1, "name": "Admin Usuarios", "moduleId": 1, "buttons": [1, 2, 3, 4] },
-    { "id": 2, "name": "Auditor Usuarios", "moduleId": 1, "buttons": [2, 5] },
-    { "id": 3, "name": "Admin Perfiles", "moduleId": 2, "buttons": [1, 4] },
-    { "id": 4, "name": "Auditor Perfiles", "moduleId": 2, "buttons": [2] },
-    { "id": 5, "name": "Report Viewer", "moduleId": 3, "buttons": [5] }
+    { "id": 1, "name": "Admin Usuarios", "status" : 1, "moduleId": 1 },
+    { "id": 2, "name": "Auditor Usuarios","status" : 1, "moduleId": 1},
+    { "id": 3, "name": "Admin Perfiles", "status" : 1, "moduleId": 2 },
+    { "id": 4, "name": "Auditor Perfiles", "status" : 1, "moduleId": 2 },
+    { "id": 5, "name": "Report Viewer",  "status" : 1, "moduleId": 3 }
   ]
   
