@@ -1,8 +1,0 @@
-[
-    { "id": 1, "name": "Crear", "status": 1 },
-    { "id": 2, "name": "Leer", "status": 1 },
-    { "id": 3, "name": "Actualizar", "status": 1 },
-    { "id": 4, "name": "Eliminar", "status": 1},
-    { "id": 5, "name": "Descargar", "status": 1 }
-  ]
-  
