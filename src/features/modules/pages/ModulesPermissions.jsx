@@ -1,8 +1,8 @@
 import { useRef } from "react";
 import { Link, useParams } from "react-router";
-import { CustomTable, CustomActions, Loading, Error } from "../../components/index";
-import permissionsDefault from "../../mocks/permissions.json";
-import { useModelsPermissions } from "../../hooks/useModelsPermissions";
+import { CustomTable, CustomActions, Loading, Error } from "../../../components/index";
+import permissionsDefault from "../../../mocks/permissions.json";
+import { useModelsPermissions } from "../hooks/useModelsPermissions";
 
 const statusMap = {
     1: "Active",

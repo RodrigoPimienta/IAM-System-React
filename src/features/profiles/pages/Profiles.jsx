@@ -1,7 +1,7 @@
 import { useRef } from "react"
-import { CustomTable, CustomActions, Loading, Error } from "../../components/index"
-import permissionsDefault  from '../../mocks/permissions.json'
-import { useProfiles } from "../../hooks/useProfiles";
+import { CustomTable, CustomActions, Loading, Error } from "../../../components/index"
+import permissionsDefault  from '../../../mocks/permissions.json'
+import { useProfiles } from "../hooks/useProfiles";
 
 const statusMap = {
     1: 'Active',

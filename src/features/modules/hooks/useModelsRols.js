@@ -49,13 +49,13 @@ export const useModelsRols = () => {
     // Aquí puedes implementar la lógica para editar el rol
   };
 
-  return { 
-    rols: rolsData, 
-    loading, 
-    errorRols, 
-    getRols, 
-    activateRol, 
-    deactivateRol, 
-    editRol 
+  return {
+    rols: rolsData,
+    loading,
+    errorRols,
+    getRols,
+    activateRol,
+    deactivateRol,
+    editRol
   };
 };

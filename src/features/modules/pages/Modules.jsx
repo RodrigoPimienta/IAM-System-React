@@ -1,8 +1,8 @@
 import { useRef } from "react"
 import { useNavigate } from "react-router";
-import { CustomTable, CustomActions, Loading, Error } from "../../components/index"
-import permissionsDefault  from '../../mocks/permissions.json'
-import { useModules } from "../../hooks/useModules";
+import { CustomTable, CustomActions, Loading, Error } from "../../../components/index"
+import permissionsDefault  from '../../../mocks/permissions.json'
+import { useModules } from "../hooks/useModules";
 
 const statusMap = {
     1: 'Active',
