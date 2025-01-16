@@ -1,8 +1,8 @@
 
-export const Error = () => {
+export const Error = ({message}) => {
   return (
     <div style={{ padding: '20px' }}>
-      Error al cargar los datos
+      {message}
     </div>
   )
 }
