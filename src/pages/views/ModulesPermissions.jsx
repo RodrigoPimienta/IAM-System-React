@@ -1,8 +1,8 @@
 import { useRef } from "react";
 import { Link, useParams } from "react-router";
-import { CustomTable, CustomActions, Loading, Error } from "../components/index";
-import permissionsDefault from "../mocks/permissions.json";
-import { useModelsRols } from "../hooks/useModelsRols";
+import { CustomTable, CustomActions, Loading, Error } from "../../components/index";
+import permissionsDefault from "../../mocks/permissions.json";
+import { useModelsPermissions } from "../../hooks/useModelsPermissions";
 
 const statusMap = {
     1: "Active",
@@ -24,23 +24,23 @@ const statusMap = {
     },
   ];
   
-  export const ModulesRols = () => {
+  export const ModulesPermissions = () => {
     const { moduleId } = useParams();
     const firstLoad = useRef(true);
 
     const { 
-      rols,
+      permissions,
       loading, 
-      errorRols, 
-      getRols, 
-      activateRol, 
-      deactivateRol, 
-      editRol 
-    } = useModelsRols();
+      errorPermissions, 
+      getPermissions, 
+      activatePermission, 
+      deactivatePermission, 
+      editPermission 
+    } = useModelsPermissions();
   
 
     if (firstLoad.current) {
-        getRols(moduleId);
+        getPermissions(moduleId);
         firstLoad.current = false;
     }
 
@@ -50,39 +50,40 @@ const statusMap = {
         key: "activate",
         Name: "Activate",
         Condition: (row) => row.status !== 1,
-        Handle: activateRol,
+        Handle: activatePermission,
       },
       {
         key: 'inactivate',
         Name: 'Inactivate',
         Condition: (row) => row.status === 1,
-        Handle: deactivateRol,
+        Handle: deactivatePermission,
       },
       {
         key: "edit",
         Name: "Edit",
         Condition: () => true,
-        Handle: editRol,
+        Handle: editPermission,
       },
     ];
   
   
     if (loading) return <Loading />;
-    if (errorRols) return <Error message={errorRols} />;
+    if (errorPermissions) return <Error message={errorPermissions} />;
     
+    console.log(permissions);
     return (
       <div className="container-fluid">
         <h2>
           <Link className="linkCustom" to="/catalogs/modules">
             {
-                rols.module
+                permissions.module
             }
           </Link>
-          {" > "} Rols
+          {" > "} Permissions
         </h2>
         <CustomTable
           columns={columns}
-          rows={rols.rols}
+          rows={permissions.permissions}
           ActionsComponent={(props) => (
             <CustomActions 
               {...props} 

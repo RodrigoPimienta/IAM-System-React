@@ -1,7 +1,7 @@
-import { useUsers } from "../hooks/useUsers";
+import { useUsers } from "../../hooks/useUsers";
 import { useRef } from "react";
-import { CustomTable, CustomActions, Loading, Error } from "../components/index"
-import permissionsDefault  from '../mocks/permissions.json'
+import { CustomTable, CustomActions, Loading, Error } from "../../components/index"
+import permissionsDefault  from '../../mocks/permissions.json'
 
 const statusMap = {
     1: 'Active',

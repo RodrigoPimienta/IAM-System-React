@@ -1,7 +1,8 @@
 import { useRef } from "react"
-import { CustomTable, CustomActions, Loading, Error } from "../components/index"
-import permissionsDefault  from '../mocks/permissions.json'
-import { useProfiles } from "../hooks/useProfiles";
+import { useNavigate } from "react-router";
+import { CustomTable, CustomActions, Loading, Error } from "../../components/index"
+import permissionsDefault  from '../../mocks/permissions.json'
+import { useModules } from "../../hooks/useModules";
 
 const statusMap = {
     1: 'Active',
@@ -23,47 +24,63 @@ const columns = [
     }
 ]
 
-export const Profiles = () => {
+export const Modules = () => {
+    let navigate = useNavigate();
 
     const firstLoad = useRef(true);
 
-    const { profiles, loading, errorProfiles, getProfiles, activateProfile, deactivateProfile, editProfile } = useProfiles()
+    const { modules, loading, errorModules, getModules, activateModule, deactivateModule, editModule } = useModules()
 
     if (firstLoad.current) {
-        getProfiles();
+        getModules();
         firstLoad.current = false;
     }
-
+    
+    
     const Actions = [
         {
             key: 'activate',
             Name: 'Activate',
             Condition: (row) => row.status !== 1,
-            Handle: (id) => activateProfile(id)
+            Handle: (id) => activateModule(id)
         },
         {
             key: 'inactivate',
             Name: 'Inactivate',
             Condition: (row) => row.status === 1,
-            Handle: (id) => deactivateProfile(id)
+            Handle: (id) => deactivateModule(id)
         },
         {
             key: 'edit',
             Name: 'Edit',
             Condition: (row) => true,
-            Handle: (id) => editProfile(id)
+            Handle: (id) => editModule(id)
+        },
+        // butoton to see the permissions of the module
+        {
+            key: 'viewPermissions',
+            Name: 'Permissions',
+            Condition: (row) => true,
+            Handle: (id) => navigate(`/catalogs/modules/${id}/permissions`)
+        },
+        // buton to see the roles of the module
+        {
+            key: 'viewRoles',
+            Name: 'Roles',
+            Condition: (row) => true,
+            Handle: (id) => navigate(`/catalogs/modules/${id}/rols`)
         }
     ]
 
     if (loading) return <Loading />;
-    if (errorProfiles) return <Error message={errorProfiles} />;
+    if (errorModules) return <Error message={errorModules} />;
 
     return (
-        <div className="container-fluid">
-            <h2>Profiles</h2>
-            <CustomTable 
+      <div className="container-fluid">
+          <h2>Modules</h2>
+          <CustomTable 
                 columns={columns} 
-                rows={profiles} 
+                rows={modules} 
                 ActionsComponent={(props) => (
                     <CustomActions
                         {...props}
@@ -71,6 +88,6 @@ export const Profiles = () => {
                         actions={Actions}
                     />
                 )} />
-        </div>  
+      </div>
     )
 }
