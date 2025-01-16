@@ -46,14 +46,6 @@ export const Header = () => {
                 Modules
                 </NavLink>
             </li>
-            <li>
-                <NavLink
-                to="/catalogs/buttons"
-                className={({ isActive }) => (isActive ? "active" : "")}
-                >
-                Buttons
-                </NavLink>
-            </li>
             </ul>
         </details>
         </li>
