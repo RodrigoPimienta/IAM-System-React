@@ -1,0 +1,51 @@
+.linkCustom {
+  color: #fff;
+  text-decoration: none;
+}
+
+.rowActions {
+  display: flex;
+  justify-content:left;
+  gap: 1rem;
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn {
+  border: 1px solid black;
+}
+
+.btn_activate  {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.btn_inactivate {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.btn_edit {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.btn_delete {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+
+.btn_viewPermissions{
+  background-color: #b5973c;
+  color: #fff;
+}
+
+.btn_viewUsers{
+  background-color: #17a2b8;
+  color: #fff;
+}
