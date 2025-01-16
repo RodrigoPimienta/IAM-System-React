@@ -1,0 +1,45 @@
+[
+  {
+    "moduleId": 1,
+    "module": "Users",
+    "rols": [
+      {
+        "id": 1,
+        "name": "Admin Usuarios SUDO",
+        "status": 1
+      },
+      {
+        "id": 2,
+        "name": "Auditor Usuarios",
+        "status": 1
+      }
+    ]
+  },
+  {
+    "moduleId": 2,
+    "module": "Roles",
+    "rols": [
+      {
+        "id": 3,
+        "name": "Admin Perfiles",
+        "status": 1
+      },
+      {
+        "id": 4,
+        "name": "Auditor Perfiles",
+        "status": 1
+      }
+    ]
+  },
+  {
+    "moduleId": 3,
+    "module": "Reports",
+    "rols": [
+      {
+        "id": 5,
+        "name": "Report Viewer",
+        "status": 1
+      }
+    ]
+  }
+]

@@ -1,12 +1,9 @@
 import { useState } from "react";
-import { getRolsAPIByModule } from "../services/rols";
+import { getRolsAPIByModule } from "../services/modulesRols";
 import { getModulAPI } from "../services/modules";
 
-export const useRols = () => {
-  const [rolsData, setRolsData] = useState({
-    module: {},
-    rols: [],
-  });
+export const useModelsRols = () => {
+  const [rolsData, setRolsData] = useState({});
   const [loading, setLoading] = useState(false);
   const [errorRols, setErrorRols] = useState(null);
 
@@ -15,13 +12,8 @@ export const useRols = () => {
     setLoading(true);
     setErrorRols(null);
     try {
-      const newModul = await getModulAPI(id);
       const newRols = await getRolsAPIByModule(id);
-
-      setRolsData({
-        module: newModul,
-        rols: newRols,
-      });
+      setRolsData(newRols[0])
     } catch (error) {
       setErrorRols(error);
     } finally {
@@ -58,8 +50,7 @@ export const useRols = () => {
   };
 
   return { 
-    module: rolsData.module, 
-    rols: rolsData.rols, 
+    rols: rolsData, 
     loading, 
     errorRols, 
     getRols, 

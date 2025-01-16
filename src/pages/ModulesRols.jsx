@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { Link, useParams } from "react-router";
 import { CustomTable, CustomActions, Loading, Error } from "../components/index";
 import permissionsDefault from "../mocks/permissions.json";
-import { useRols } from "../hooks/useRols";
+import { useModelsRols } from "../hooks/useModelsRols";
 
 const statusMap = {
     1: "Active",
@@ -30,14 +30,13 @@ const statusMap = {
 
     const { 
       rols,
-      module, 
       loading, 
       errorRols, 
       getRols, 
       activateRol, 
       deactivateRol, 
       editRol 
-    } = useRols();
+    } = useModelsRols();
   
 
     if (firstLoad.current) {
@@ -76,14 +75,14 @@ const statusMap = {
         <h2>
           <Link className="linkCustom" to="/catalogs/modules">
             {
-                module.name
+                rols.module
             }
           </Link>
           {" > "} Rols
         </h2>
         <CustomTable
           columns={columns}
-          rows={rols}
+          rows={rols.rols}
           ActionsComponent={(props) => (
             <CustomActions 
               {...props} 
