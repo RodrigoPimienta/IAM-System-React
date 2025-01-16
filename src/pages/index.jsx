@@ -1,4 +1,3 @@
-export { Access } from "./Access"
 export { Users } from "./Users"
 export { Modules } from "./Modules"
 export { Profiles } from "./Profiles"
