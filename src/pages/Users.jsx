@@ -43,8 +43,8 @@ export const Users = () => {
             Handle : (id) => activateUser(id)
         },
         {
-            key: 'deactivate',
-            Name: 'Deactivate',
+            key: 'inactivate',
+            Name: 'Inactivate',
             Condition : (row) => row.status === 1,
             Handle : (id) => deactivateUser(id)
         },
@@ -57,7 +57,7 @@ export const Users = () => {
     ]
 
     if (loading) return <Loading />;
-    if (errorUsers) return <Error />;
+    if (errorUsers) return <Error message={errorUsers} />;
 
     return (
         <div className="container-fluid">

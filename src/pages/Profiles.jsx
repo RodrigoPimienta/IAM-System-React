@@ -42,8 +42,8 @@ export const Profiles = () => {
             Handle: (id) => activateProfile(id)
         },
         {
-            key: 'deactivate',
-            Name: 'Deactivate',
+            key: 'inactivate',
+            Name: 'Inactivate',
             Condition: (row) => row.status === 1,
             Handle: (id) => deactivateProfile(id)
         },
@@ -56,7 +56,7 @@ export const Profiles = () => {
     ]
 
     if (loading) return <Loading />;
-    if (errorProfiles) return <Error />;
+    if (errorProfiles) return <Error message={errorProfiles} />;
 
     return (
         <div className="container-fluid">
