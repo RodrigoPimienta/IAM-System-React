@@ -23,4 +23,15 @@ const getModulesAPI = async () => {
     }
 }
 
-export { getModulesAPI }; 
+const getModulAPI = async (id) => {
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    try {
+        const response = await fetch(`http://localhost:5173/src/mocks/modules.json`);
+        const data = await response.json();
+        return mapModules(data).find((module) => module.id === id);
+    } catch (e) {
+        throw new Error("Error en getModulAPI");
+    }
+}
+
+export { getModulesAPI, getModulAPI }; 
