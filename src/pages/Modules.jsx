@@ -1,4 +1,5 @@
 import { useRef } from "react"
+import { useNavigate } from "react-router";
 import { CustomTable, CustomActions, Loading, Error } from "../components/index"
 import permissionsDefault  from '../mocks/permissions.json'
 import { useModules } from "../hooks/useModules";
@@ -24,6 +25,7 @@ const columns = [
 ]
 
 export const Modules = () => {
+    let navigate = useNavigate();
 
     const firstLoad = useRef(true);
 
@@ -43,8 +45,8 @@ export const Modules = () => {
             Handle: (id) => activateModule(id)
         },
         {
-            key: 'deactivate',
-            Name: 'Deactivate',
+            key: 'inactivate',
+            Name: 'Inactivate',
             Condition: (row) => row.status === 1,
             Handle: (id) => deactivateModule(id)
         },
@@ -53,11 +55,25 @@ export const Modules = () => {
             Name: 'Edit',
             Condition: (row) => true,
             Handle: (id) => editModule(id)
+        },
+        // butoton to see the permissions of the module
+        {
+            key: 'viewPermissions',
+            Name: 'Permissions',
+            Condition: (row) => true,
+            Handle: (id) => navigate(`/catalogs/modules/${id}/permissions`)
+        },
+        // buton to see the roles of the module
+        {
+            key: 'viewRoles',
+            Name: 'Roles',
+            Condition: (row) => true,
+            Handle: (id) => navigate(`/catalogs/modules/${id}/rols`)
         }
     ]
 
     if (loading) return <Loading />;
-    if (errorModules) return <Error />;
+    if (errorModules) return <Error message={errorModules} />;
 
     return (
       <div className="container-fluid">
