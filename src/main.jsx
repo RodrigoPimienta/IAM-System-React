@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router";
 import './index.css'
 import App from './App.jsx'
-import {Catalogs, Home, Access, Users, Modules, Profiles, Rols, Buttons} from "./pages/index"
+import {Catalogs, Home, Access, Users, Modules, Profiles, ModulesRols, ModulesPermissions,  Buttons} from "./pages/index"
 
 
 const root = document.getElementById("root");
@@ -23,7 +23,8 @@ ReactDOM.createRoot(root).render(
             <Route path="profiles" element={<Profiles />} />
             <Route path="buttons" element={<Buttons />} />
             <Route path="modules" element={<Modules />} />
-            <Route path="modules/:moduleId/rols" element={<Rols />} />
+            <Route path="modules/:moduleId/rols" element={<ModulesRols />} />
+            <Route path="modules/:moduleId/permissions" element={<ModulesPermissions />} />
           </Route>
         </Route>
       </Routes>
