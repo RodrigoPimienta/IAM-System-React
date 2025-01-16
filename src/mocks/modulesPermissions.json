@@ -1,0 +1,93 @@
+[
+    {
+        "moduleId": 1,
+        "module": "Users",
+        "permissions": [
+            {
+                "id": 1,
+                "key": "create",
+                "name": "Create",
+                "status": 1
+            },
+            {
+                "id": 2,
+                "key": "edit",
+                "name": "Edit",
+                "status": 1
+            },
+            {
+                "id": 3,
+                "key": "delete",
+                "name": "Delete",
+                "status": 1
+            },
+            {
+                "id": 4,
+                "key": "view",
+                "name": "View",
+                "status": 1
+            }
+        ]
+    },
+    {
+        "moduleId": 2,
+        "module": "Roles",
+        "permissions": [
+            {
+                "id": 5,
+                "key": "create",
+                "name": "Create",
+                "status": 1
+            },
+            {
+                "id": 6,
+                "key": "edit",
+                "name": "Edit",
+                "status": 1
+            },
+            {
+                "id": 7,
+                "key": "delete",
+                "name": "Delete",
+                "status": 1
+            },
+            {
+                "id": 8,
+                "key": "view",
+                "name": "View",
+                "status": 1
+            }
+        ]
+    },
+    {
+        "moduleId": 3,
+        "module": "Permissions",
+        "permissions": [
+            {
+                "id": 9,
+                "key": "create",
+                "name": "Create",
+                "status": 1
+            },
+            {
+                "id": 10,
+                "key": "edit",
+                "name": "Edit",
+                "status": 1
+            },
+            {
+                "id": 11,
+                "key": "delete",
+                "name": "Delete",
+                "status": 1
+            },
+            {
+                "id": 12,
+                "key": "view",
+                "name": "View",
+                "status": 1
+            }
+        ]
+    }
+
+]
