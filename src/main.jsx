@@ -3,15 +3,15 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router";
 import './styles/index.css'
 import './styles/app.css'
-import { AuthProvider } from './context/index';
+import { AuthProvider, PermissionsProvider } from './context/index';
 import { PublicLayout, AdminLayout, ProtectedRoute, Login } from './layouts/index'
 import { HomePublic, Catalogs, Users, Profiles, Modules, ModulesRols, ModulesPermissions, HomePrivate } from './pages/index'
 
 const root = document.getElementById("root");
 
 ReactDOM.createRoot(root).render(
-    <AuthProvider>
-      <StrictMode>
+  <AuthProvider>
+    <StrictMode>
       <BrowserRouter>
         <Routes>
           {/* Rutas públicas */}
@@ -25,13 +25,15 @@ ReactDOM.createRoot(root).render(
           <Route
             path="/admin"
             element={
-              <ProtectedRoute>
-                <AdminLayout />
-              </ProtectedRoute>
+              <PermissionsProvider> {/* Solo envuelve las rutas protegidas */}
+                <ProtectedRoute>
+                  <AdminLayout />
+                </ProtectedRoute>
+              </PermissionsProvider>
             }
           >
             <Route index element={<HomePrivate />} />
-            <Route path="catalogs" element={<Catalogs />}>
+            <Route path="catalogs" element={<Catalogs />} >
               <Route index element={<Users />} />
               <Route path="users" element={<Users />} />
               <Route path="profiles" element={<Profiles />} />
@@ -44,5 +46,4 @@ ReactDOM.createRoot(root).render(
       </BrowserRouter>
     </StrictMode>
   </AuthProvider>
-
 );
