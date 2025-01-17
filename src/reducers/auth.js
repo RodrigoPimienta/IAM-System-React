@@ -19,12 +19,12 @@ export const authReducer = (state, action) => {
         case LOGIN_ACTIONS.SET_LOADING:
             return { ...state, loading: actionPayload };
         case LOGIN_ACTIONS.SET_ERROR:
-            return { ...state, error: actionPayload };
+            return { isLoggedIn: false, user: null, token: null, loading: false, error: actionPayload };
         case LOGIN_ACTIONS.LOGIN:
-            return { ...state, isLoggedIn: true, user: actionPayload.user, token: actionPayload.token, loading: false, error: null };
+            return { isLoggedIn: true, user: actionPayload.user, token: actionPayload.token, loading: false, error: null };
         case LOGIN_ACTIONS.LOGOUT:
-            return { ...state, isLoggedIn: false, user: null, token: null, loading: false, error: null };
+            return { isLoggedIn: false, user: null, token: null, loading: false, error: null };
         default:
             return state;
     }
-};
+}; 

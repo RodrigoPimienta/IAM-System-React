@@ -1,7 +1,6 @@
-// context/auth.js
 import { createContext, useReducer } from "react";
 import { authReducer, initialState, LOGIN_ACTIONS } from "../reducers/auth";
-import { loginAPI } from "../services/auth";
+import { loginAPI, CheckToken } from "../services/auth"; 
 
 export const AuthContext = createContext(null);
 
@@ -28,7 +27,23 @@ function useAuthReducer() {
         dispatch({ type: LOGIN_ACTIONS.LOGOUT });
     };
 
-    return { state, login, logout };
+    const validateToken = async () => {
+        dispatch({ type: LOGIN_ACTIONS.SET_LOADING, payload: true });
+        try {
+            const response = await CheckToken();
+            if (response.error === false) {
+                dispatch({ type: LOGIN_ACTIONS.LOGIN, payload: state });
+            } else {
+                dispatch({ type: LOGIN_ACTIONS.SET_ERROR, payload: response.message });
+            }
+        } catch (error) {
+            dispatch({ type: LOGIN_ACTIONS.SET_ERROR, payload: "Unexpected error occurred" });
+        } finally {
+            dispatch({ type: LOGIN_ACTIONS.SET_LOADING, payload: false });
+        }
+    };
+
+    return { state, login, logout, validateToken };
 }
 
 export function AuthProvider({ children }) {

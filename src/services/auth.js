@@ -38,3 +38,79 @@ export const loginAPI = async (data) => {
         }
     }
 }
+
+export const CheckPermission = async (token) => {
+    try {
+
+        // const response = await fetch('http://localhost:4000/api/auth/permissions', {
+        //     method: 'GET',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'Authorization': `Bearer ${token}`
+        //     }
+        // });
+
+        // const result = await response.json();
+        // return result;
+
+        return {
+            error: false,
+            message: 'Permissions granted',
+            data: [
+                // aqui es un array de permisos por modulo
+                {
+                    key: 'users',
+                    name: 'Users',
+                    permissions: ['create', 'read', 'update', 'delete']
+                },
+                {
+                    key: 'modules',
+                    name: 'Modules',
+                    permissions: ['create', 'read', 'update', 'delete']
+                },
+                {
+                    key: 'profiles',
+                    name: 'Profiles',
+                    permissions: ['create', 'read', 'update', 'delete']
+                }
+            ]
+        }
+
+    }catch (error) {
+        return {
+            error: true,
+            message: 'Unexpected error occurred',
+            data: null
+        }
+    }
+}
+
+export const CheckToken = async (token) => {
+    try {
+
+        // const response = await fetch('http://localhost:4000/api/auth/check-token', {
+        //     method: 'GET',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'Authorization': `Bearer ${token}`
+        //     }
+        // });
+
+        // const result = await response.json();
+        // return result;
+
+        return {
+            error: false,
+            message: 'Token is valid',
+            data: null
+        }
+
+    }catch (error) {
+        return {
+            error: true,
+            message: 'Unexpected error occurred',
+            data: null
+        }
+    }
+}
+ 
