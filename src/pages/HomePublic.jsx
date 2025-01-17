@@ -1,5 +1,13 @@
+import { useNavigate } from "react-router"
 
 export const HomePublic = () => {
+
+  const navigate = useNavigate()
+
+  const handelLogin = () => {
+    navigate('/login')
+  }
+
   return (
     <div className="container-fluid">
 
@@ -22,9 +30,13 @@ export const HomePublic = () => {
         <li>React vanilla + Backend + Autenticación JWT</li>
         <li>React Redux + Backend + Autenticación JWT</li>
         <li>React Zustand + Backend + Autenticación JWT</li>
-
-
       </ul>
+    </section>
+
+    <section id="logeo">
+      <h2>Logeo</h2>
+      <p>Por el momento, el logeo está hecho con localStorage. En el futuro, se hará con un backend que devuelva un JWT Token.</p>
+      <button onClick={handelLogin} className="btn btn-primary">Logeo</button>
     </section>
         
     </div>
