@@ -1,0 +1,8 @@
+[
+    { "key": "activate", "Name": "Activate" },
+    { "key": "inactivate", "Name": "Inactivate" },
+    { "key": "edit", "Name": "Edit" },
+    { "key": "viewPermissions", "Name": "View permissions" },
+    { "key": "viewRoles", "Name": "View roles" }
+
+]

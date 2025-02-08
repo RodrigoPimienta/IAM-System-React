@@ -1,10 +1,10 @@
 
-export const Home = () => {
-  return (
-    <div className="container-fluid">
-        <h2>Home</h2>
-
-        <p>
+export const HomePrivate = () => {
+    return (
+      <div className="container-fluid">
+          <h2>Home private</h2>
+  
+          <p>
             Bienvenido a IAM System, un sistema de administración de identidades y accesos.
         </p>
 
@@ -15,6 +15,8 @@ export const Home = () => {
         <p>
             Para comenzar, selecciona una de las opciones del menú superior.
         </p>
-    </div>
-  )
-}
+  
+      </div>
+    )
+  }
+  
