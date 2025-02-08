@@ -44,7 +44,7 @@ export const Header = () => {
                       return (
                         <li key={module.key}>
                           <NavLink
-                            to={`/catalogs/${module.key}`}
+                            to={`/admin/catalogs/${module.key}`}
                             className={({ isActive }) => (isActive ? "active" : "")}
                           >
                             {module.name}
