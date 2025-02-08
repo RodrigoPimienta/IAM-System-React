@@ -1,43 +1,38 @@
 export const loginAPI = async (data) => {
     try {
-        // const response = await fetch('http://localhost:4000/api/auth/login', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify(data)
-        // });
-        // const result = await response.json();
-        // return result;
+        const response = await fetch('http://localhost:8000/api/auth/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json' // Important: Include Accept header
+            },
+            body: JSON.stringify(data) // Use the 'data' parameter, not jsonData
+        });
 
-        // como lo haremos con localStorage, tenemos que simular la respuesta, asi que siempre retornaremos un objeto con un token
-            // dormir 2 segundos
+        if (!response.ok) { // Check for HTTP errors FIRST
+            const errorData = await response.json(); // Try to parse error for better message
+            return {
+                error: true,
+                message: errorData.message || `HTTP error! status: ${response.status}`, // Include status code
+                data: null
+            };
+        }
 
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-
+        const responseData = await response.json(); // Now it's safe to parse
         return {
             error: false,
-            message: 'User logged in',
-            data: {
-                user: {
-                    id: 1,
-                    username: data.username,
-                    email: 'usuario@gmail.com',
-                    role: 'admin',
-                    status: 1
-                },
-                token: '1234567890'
-            }
-        }
+            message: null,
+            data: responseData // No need to destructure if you want the whole object
+        };
 
     } catch (error) {
         return {
             error: true,
-            message: 'Unexpected error occurred',
+            message: error.message || 'Unexpected error occurred', // Include error message
             data: null
-        }
+        };
     }
-}
+};
 
 export const CheckPermission = async (token) => {
     try {
@@ -76,7 +71,7 @@ export const CheckPermission = async (token) => {
             ]
         }
 
-    }catch (error) {
+    } catch (error) {
         return {
             error: true,
             message: 'Unexpected error occurred',
@@ -105,7 +100,7 @@ export const CheckToken = async (token) => {
             data: null
         }
 
-    }catch (error) {
+    } catch (error) {
         return {
             error: true,
             message: 'Unexpected error occurred',
@@ -113,4 +108,30 @@ export const CheckToken = async (token) => {
         }
     }
 }
- 
+
+
+// async function test() {
+//     const jsonData = { user: "test@example.com", password: "123456" };
+//     try {
+//         const response = await fetch('http://localhost:8000/api/auth/login', {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                 'Accept': 'application/json'
+//             },
+//             body: JSON.stringify(jsonData)
+//         });
+
+//         if (!response.ok) {
+//             const errorData = await response.json(); // Try to parse error response
+//             throw new Error(`HTTP error! status: ${response.status}, message: ${errorData.message || 'Unknown error'}`);  // Improved error handling
+//         }
+
+//         const data = await response.json();
+//         console.log(data);
+//     } catch (error) {
+//         console.error('Error:', error); // More robust error handling
+//     }
+// }
+
+// test();

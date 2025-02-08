@@ -16,7 +16,7 @@ export const Login = () => {
     }, [auth.isLoggedIn, navigate]); // Solo se ejecuta cuando cambia `auth.isLoggedIn`
 
     const handleLogin = () => {
-        login({ user: "testUser", password: "123456" });
+        login({ email: "test@example.com", password: "123456", password_confirmation: "123456" });
     };
 
     return (
