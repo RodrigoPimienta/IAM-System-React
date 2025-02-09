@@ -12,15 +12,14 @@ export const PERMISSIONS_ACTIONS = {
 
 export const permissionsReducer = (state, action) => {
     const { type: actionType, payload: actionPayload } = action;
-    console.log('reducer');
-    console.log(actionPayload);
     switch (actionType) {
         case PERMISSIONS_ACTIONS.SET_LOADING:
             return { ...state, loading: actionPayload };
         case PERMISSIONS_ACTIONS.SET_ERROR:
             return { ...state, error: actionPayload };
         case PERMISSIONS_ACTIONS.SET_PERMISSIONS:
-            return { ...state, permissions: actionPayload, loading: false, error: null };
+            console.log(actionPayload.access);
+            return { ...state, permissions: actionPayload.access, loading: false, error: null };
         default:
             return state;
     }
