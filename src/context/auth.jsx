@@ -27,23 +27,7 @@ function useAuthReducer() {
         dispatch({ type: LOGIN_ACTIONS.LOGOUT });
     };
 
-    const validateToken = async () => {
-        dispatch({ type: LOGIN_ACTIONS.SET_LOADING, payload: true });
-        try {
-            const response = await CheckToken();
-            if (response.error === false) {
-                dispatch({ type: LOGIN_ACTIONS.LOGIN, payload: state });
-            } else {
-                dispatch({ type: LOGIN_ACTIONS.SET_ERROR, payload: response.message });
-            }
-        } catch (error) {
-            dispatch({ type: LOGIN_ACTIONS.SET_ERROR, payload: "Unexpected error occurred" });
-        } finally {
-            dispatch({ type: LOGIN_ACTIONS.SET_LOADING, payload: false });
-        }
-    };
-
-    return { state, login, logout, validateToken };
+    return { state, login, logout };
 }
 
 export function AuthProvider({ children }) {

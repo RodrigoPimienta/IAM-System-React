@@ -1,7 +1,7 @@
+import {useAuth} from '../../../hooks/useAuth';
+import {usePermissions} from '../../../hooks/usePermissions';
 import { useUsers } from "../hooks/useUsers";
-import { useContext } from "react";
 import { CustomTable, CustomActions, Loading, Error } from "../../../components";
-import { PermissionsContext } from "../../../context/permissions";
 
 const moduleKey = 'users';
 const statusMap = {
@@ -27,10 +27,10 @@ const columns = [
 ];
 
 export const Users = () => {
-    const { permissions } = useContext(PermissionsContext);
-    const { resUsers, isLoading, error, editUser, updateStatus } = useUsers();
+    const { permissions } = usePermissions();
+    const { auth } = useAuth();
+    const { resUsers, isLoading, error, editUser, updateStatus, updatePassword } = useUsers();
 
-    console.log('resUsers', resUsers);
     const actions = [
         {
             key: 'update',
@@ -42,13 +42,19 @@ export const Users = () => {
             key: 'updateStatus',
             label: 'Disable',
             condition: (row) => row.status === 1,
-            handle: (id) => updateStatus.mutate({id, status: 0})
+            handle: (id) => updateStatus.mutate({id_user, status: 0})
         },
         {
             key: 'updateStatus',
             label: 'Enable',
             condition: (row) => row.status === 0,
-            handle: (id) => updateStatus.mutate({id, status: 1})
+            handle: (id) => updateStatus.mutate({id_user, status: 1})
+        },
+        {
+            key: 'updatePassword',
+            label: 'Enable',
+            condition: (row) => row.id_user === 0,
+            handle: (id) => updatePassword.mutate({id_user, status: 1})
         }
     ];
 
