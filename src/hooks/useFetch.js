@@ -21,10 +21,10 @@ export const useFetch = () => {
     const requestPut = async (url, body, options = {}) => {
         return await request(url, { method: "PUT", body: JSON.stringify(body), ...options });
     };
-
+    
     // Función para hacer peticiones DELETE
-    const requestDelete = async (url, options = {}) => {
-        return await request(url, { method: "DELETE", ...options });
+    const requestPatch = async (url,body, options = {}) => {
+        return await request(url, { method: "PATCH", body: JSON.stringify(body), ...options });
     };
 
     // Función general para realizar la solicitud
@@ -66,5 +66,5 @@ export const useFetch = () => {
         }
     };
 
-    return { loading, error, requestGet, requestPost, requestPut, requestDelete };
+    return { loading, error, requestGet, requestPost, requestPut, requestPatch };
 };

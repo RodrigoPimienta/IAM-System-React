@@ -1,8 +1,9 @@
 import { useUsers } from "../hooks/useUsers";
-import { useRef } from "react";
-import { CustomTable, CustomActions, Loading, Error } from "../../../components/index"
-import permissionsDefault  from '../../../mocks/permissions.json'
+import { useContext } from "react";
+import { CustomTable, CustomActions, Loading, Error } from "../../../components";
+import { PermissionsContext } from "../../../context/permissions";
 
+const moduleKey = 'users';
 const statusMap = {
     1: 'Active',
     2: 'Inactive',
@@ -26,53 +27,42 @@ const columns = [
 ];
 
 export const Users = () => {
-    const firstLoad = useRef(true);
+    const { permissions } = useContext(PermissionsContext);
+    const { resUsers, isLoading, error, editUser, updateStatus } = useUsers();
 
-    const {  resUsers, loading, errorUsers, getUsers, activateUser, deactivateUser, editUser} = useUsers()
-
-    if (firstLoad.current) {
-        getUsers();
-        firstLoad.current = false;
-    }
-
-    const Actions =[
+    console.log('resUsers', resUsers);
+    const actions = [
         {
-            key: 'activate',
-            Name: 'Activate',
-            Condition : (row) => row.status !== 1,
-            Handle : (id) => activateUser(id)
+            key: 'update',
+            label: 'Edit',
+            condition: (row) => true,
+            handle: (id) => editUser.mutate(id)
         },
         {
-            key: 'inactivate',
-            Name: 'Inactivate',
-            Condition : (row) => row.status === 1,
-            Handle : (id) => deactivateUser(id)
+            key: 'updateStatus',
+            label: 'Disable',
+            condition: (row) => row.status === 1,
+            handle: (id) => updateStatus.mutate({id, status: 0})
         },
         {
-            key: 'edit',
-            Name: 'Edit',
-            Condition : (row) => true,
-            Handle : (id) => editUser(id)
+            key: 'updateStatus',
+            label: 'Enable',
+            condition: (row) => row.status === 0,
+            handle: (id) => updateStatus.mutate({id, status: 1})
         }
-    ]
+    ];
 
-    if (loading) return <Loading />;
-    if (errorUsers) return <Error message={errorUsers} />;
+    if (isLoading) return <Loading />;
+    if (error) return <Error message={error.message} />;
+
+    const ActionsComponent = (props) => (
+        <CustomActions {...props} permissions={permissions[moduleKey]?.permissions || {}} actions={actions} />
+    );
 
     return (
         <div className="container-fluid">
             <h2>Users</h2>
-            <CustomTable 
-                columns={columns} 
-                rows={resUsers} 
-                ActionsComponent={(props) => (
-                        <CustomActions
-                            {...props}
-                            permissions={permissionsDefault}
-                            actions={Actions}
-
-                        />
-                    )} />
-            </div>  
-        )
-}
+            <CustomTable columns={columns} rows={resUsers || []} ActionsComponent={ActionsComponent} />
+        </div>
+    );
+};
