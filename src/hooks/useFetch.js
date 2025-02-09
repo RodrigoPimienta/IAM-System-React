@@ -32,13 +32,15 @@ export const useFetch = () => {
         setLoading(true);
         setError(null);
 
-        if(!auth.token == null) {
-            throw new Error("No se ha iniciado sesión");
+        if (!auth.token == null) {
+            setError("No hay token de autenticación");
+            return { error: true, message: "No hay token de autenticación", data: null };
         }
 
         try {
             const headers = {
                 "Content-Type": "application/json",
+                'Accept': 'application/json',
                 Authorization: `Bearer ${auth.token}`,
                 ...options.headers, // Sobrescribir encabezados si es necesario
             };
@@ -47,8 +49,12 @@ export const useFetch = () => {
             const response = await fetch(url, { ...options, headers });
 
             if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || "Error en la solicitud");
+                const errorData = await response.json(); // Try to parse error for better message
+                return {
+                    error: true,
+                    message: errorData.message || `HTTP error! status: ${response.status}`, // Include status code
+                    data: null
+                };
             }
 
             return await response.json(); // Devuelve el JSON de la respuesta

@@ -1,6 +1,6 @@
 import { createContext, useReducer } from "react";
 import { authReducer, initialState, LOGIN_ACTIONS } from "../reducers/auth";
-import { loginAPI, CheckToken } from "../services/auth"; 
+import { loginAPI } from "../services/auth"; 
 
 export const AuthContext = createContext(null);
 
