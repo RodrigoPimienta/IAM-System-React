@@ -1,45 +1,43 @@
-import {useState} from 'react'
-import { getUsersAPI } from '../services/users'
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useFetch } from "../../../hooks/useFetch";
+
 export const useUsers = () => {
-    const [resUsers, setUsers] = useState([])
-    const [loading, setLoading] = useState(false)
-    const [errorUsers, setErrorUsers] = useState(null)
+    const { requestGet, requestPost, requestPut, requestPatch } = useFetch();
+    const queryClient = useQueryClient();
 
+    const mapUsers = (user) => ({
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        id_profile: user.profile[0].id_profile,
+        profile: user.profile[0].profile,
+        status: user.status,
+    });
 
-    const getUsers = async () => {
-        setLoading(true)
-        setErrorUsers(null)
-        try {
-            const newUsers = await getUsersAPI()
-            setUsers(newUsers)
-        } catch (error) {
-            setErrorUsers(error)
-        } finally {
-            setLoading(false)
-        }
-    }
+    // Obtener usuarios (React Query maneja loading/error automáticamente)
+    const { data: resUsers, isLoading: loading, error } = useQuery({
+        queryKey: ["users"],
+        queryFn: async () => {
+            const response = await requestGet("http://localhost:8000/api/users");
+            return response.data ? response.data.map(mapUsers) : [];
+        },
+    });
 
-    const activateUser = async (id) => {
-        console.log(`Activating user with ID ${id}`);
-        // Aquí podrías llamar a una API para activar al usuario
-        const updatedUsers = resUsers.map((user) =>
-            user.id === id ? { ...user, status: 1 } : user
-        );
-        setUsers(updatedUsers);
-    };
+    // Mutaciones
+    const postUser = useMutation({
+        mutationFn: async (userData) => requestPost("http://localhost:8000/api/users", userData),
+        onSuccess: () => queryClient.invalidateQueries(["users"]),
+    });
 
-    const deactivateUser = async (id) => {
-        console.log(`Deactivating user with ID ${id}`);
-        const updatedUsers = resUsers.map((user) =>
-            user.id === id ? { ...user, status: 2 } : user
-        );
-        setUsers(updatedUsers);
-    };
+    const editUser = useMutation({
+        mutationFn: async ({ id, userData }) => requestPut(`http://localhost:8000/api/users/${id}`, userData),
+        onSuccess: () => queryClient.invalidateQueries(["users"]),
+    });
 
-    const editUser = (id) => {
-        console.log(`Editing user with ID ${id}`);
-        // Lógica para abrir un modal o redirigir a una pantalla de edición
-    };
+    const updateStatus = useMutation({
+        mutationFn: async ({ id, status }) => requestPatch(`http://localhost:8000/api/users/${id}/status`, { status }),
+        onSuccess: () => queryClient.invalidateQueries(["users"]),
+    });
 
-    return { resUsers, loading, errorUsers, getUsers, activateUser, deactivateUser, editUser }
-}
+    return { resUsers, loading, error, postUser, editUser, updateStatus };
+};
