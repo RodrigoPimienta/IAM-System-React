@@ -1,12 +1,10 @@
 import { useState } from "react";
-import { useFetch } from "../../../hooks/useFetch"; // Importar el hook useFetch
 import { getProfilesAPI, createProfileAPI, updateProfileAPI, deleteProfileAPI } from "../services/profiles"; // Importar los servicios
 
 export const useProfiles = () => {
 
     const [profiles, setProfiles] = useState([]);
     const [errorProfiles, setErrorProfiles] = useState(null);
-    const { requestGet, requestPost, requestPut, requestDelete, loading, error } = useFetch(); // Usar el hook useFetch
 
     const getProfiles = async () => {
         try {

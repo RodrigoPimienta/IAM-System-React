@@ -8,7 +8,6 @@
 //     });
 // }
 
-import { useFetch } from "../../../hooks/useFetch";
 
 // const getProfilesAPI = async () => {
 
