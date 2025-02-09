@@ -1,17 +1,18 @@
-import { useContext, useEffect, useRef } from "react";
+import { useEffect  } from "react";
 import { NavLink } from "react-router";
-import { PermissionsContext } from "../context/permissions";
+import { usePermissions } from "../hooks/usePermissions";
 
 export const Header = () => {
-  const { permissions, updatePermissions } = useContext(PermissionsContext);
-  const fetched = useRef(false); // Bandera para evitar doble ejecución
-
+  const { permissions, isLoading, error, updatePermissions } = usePermissions();
+  // Llamar a updatePermissions solo si no hay permisos cargados
   useEffect(() => {
-    if (!fetched.current) {
-      fetched.current = true;
+    if (!permissions) {
       updatePermissions();
     }
-  }, []); // Se ejecuta solo una vez al montar
+  }, [permissions, updatePermissions]);
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
 
   return (
     <header className="container-fluid">
@@ -21,32 +22,24 @@ export const Header = () => {
         </ul>
         <ul className="menu">
           <li>
-            <NavLink
-              to="/home"
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
+            <NavLink to="/home" className={({ isActive }) => (isActive ? "active" : "")}>
               Home
             </NavLink>
           </li>
           <li>
             <details className="dropdown">
-              <summary>
-                Sections
-              </summary>
-              <ul dir="rtl">
-              {permissions && Object.keys(permissions).length > 0 ? (
-                  Object.keys(permissions).map((key) => (
-                    <li key={key}> {/* key prop is important here */}
-                      <NavLink
-                        to={`/admin/catalogs/${key}`} // Use the key directly
-                        className={({ isActive }) => (isActive ? "active" : "")}
-                      >
-                        {permissions[key].name} {/* Access the name using the key */}
+              <summary>Sections</summary>
+              <ul>
+                {permissions && Object.keys(permissions).length > 0 ? (
+                  Object.entries(permissions).map(([key, value]) => (
+                    <li key={key}>
+                      <NavLink to={`/admin/catalogs/${key}`} className={({ isActive }) => (isActive ? "active" : "")}>
+                        {value.name} {/* Acceso al nombre del módulo */}
                       </NavLink>
                     </li>
                   ))
                 ) : (
-                  <li>No modules.</li> // Mensaje si no hay permisos
+                  <li>No modules.</li> // Mensaje si no hay módulos disponibles
                 )}
               </ul>
             </details>
@@ -54,5 +47,5 @@ export const Header = () => {
         </ul>
       </nav>
     </header>
-  )
-}
+  );
+};
