@@ -1,37 +1,43 @@
-import { createContext, useReducer } from "react";
-import { permissionsReducer, initialState, PERMISSIONS_ACTIONS  } from "../reducers/permissions";
-import { useFetch } from "../hooks/useFetch";
+import { createContext, useContext } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { fetcher } from "../services/fetcher";
+import { useAuth } from "../hooks/useAuth"; // Aquí sí puedes usar el hook
+
 export const PermissionsContext = createContext(null);
 
-function usePermissionsReducer() {
-    // Implement the usePermissionsReducer hook
-    const [state, dispatch] = useReducer(permissionsReducer, initialState);
-    const { requestGet } = useFetch(); // Usa el hook useFetch
-    const update = async () => {
-        dispatch({ type: PERMISSIONS_ACTIONS.SET_LOADING, payload: true });
-        try{
-            const response = await requestGet('http://localhost:8000/api/auth/permissions');
-            console.log(response);
-            if(response.error === false){
-                dispatch({ type: PERMISSIONS_ACTIONS.SET_PERMISSIONS, payload: response.data });
-            }else{
-                dispatch({ type: PERMISSIONS_ACTIONS.SET_ERROR, payload: response.message });
-            }
-        }catch (error) {
-            dispatch({ type: PERMISSIONS_ACTIONS.SET_ERROR, payload: "Unexpected error occurred" });
-        }finally{
-            dispatch({ type: PERMISSIONS_ACTIONS.SET_LOADING, payload: false });
-        }
-    }
+const mapPermissions = (permission) => {
+    return permission?.access || {};
+};
 
-    return { state, update };
-} 
+const getPermissions = async (token) => {
+    return await fetcher("http://localhost:8000/api/auth/permissions", token);
+};
 
-export function PermissionsProvider({children}) {
-    const { state, update } = usePermissionsReducer();
+export function PermissionsProvider({ children }) {
+    const { auth } = useAuth(); // Aquí sí puedes usar el hook
+    const token = auth?.token; // Obtener el token de autenticación
+
+    const { data: permissions, isLoading, error, refetch } = useQuery({
+        queryKey: ["permissions"],
+        queryFn: async () => {
+            const response = await getPermissions(token);
+            return response.data ? mapPermissions(response.data) : {};
+        },
+        enabled: !!token, // Solo ejecuta la query si hay un token
+        retry: 3,
+        refetchOnWindowFocus: false,
+    });
+
     return (
-        <PermissionsContext.Provider value={{permissions: state.permissions, updatePermissions: update}}>
+        <PermissionsContext.Provider 
+            value={{
+                permissions,
+                isLoading,
+                error,
+                updatePermissions: refetch,
+            }}
+        >
             {children}
         </PermissionsContext.Provider>
-    )
+    );
 }
