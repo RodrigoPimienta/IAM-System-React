@@ -3,6 +3,7 @@ import { NavLink } from "react-router";
 import { usePermissions } from "../hooks/usePermissions";
 import Swal from "sweetalert2";
 import '../styles/header.css';
+import { Loading } from "./Loading";
 
 export const Header = () => {
   const { permissions, isLoading, error, updatePermissions } = usePermissions();
@@ -27,12 +28,7 @@ export const Header = () => {
 
   return (
     <>
-      {/* Loader de pantalla completa con animación */}
-      {isLoading && (
-        <div className="overlay">
-          <div className="loader"></div>
-        </div>
-      )}
+      {isLoading && <Loading />}
 
       <header className="container-fluid">
         <nav>
