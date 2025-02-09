@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { createContext } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "../hooks/useAuth"; // Aquí sí puedes usar el hook
 import { getPermissions} from "../services/auth";  // Importar los servicios
