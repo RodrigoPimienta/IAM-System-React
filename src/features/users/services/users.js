@@ -1,28 +1,16 @@
-const mapUsers = (data) => {
-    return data.map((user) => {
-        return {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        idProfile: user.idProfile,
-        profile: user.profile,
-        status: user.status,
-        };
-    });
-};
+import { fetcher } from "../../../services/fetcher";
 
-const getUsersAPI = async () => {
+export const getUsers = async (token) => fetcher("http://localhost:8000/api/users", token);
 
-  // dormir por 2 segundos
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+export const createUser = async (token,userData) => 
+    fetcher("http://localhost:8000/api/users",token, { method: "POST", body: JSON.stringify(userData) });
 
-  try {
-    const response = await fetch(`http://localhost:5173/src/mocks/users.json`);
-    const data = await response.json();
-    return mapUsers(data);
-  } catch (e) {
-    throw new Error("Error en paginateProducts");
-  }
-};
+export const updateUser = async (token,id, userData) => 
+    fetcher(`http://localhost:8000/api/users/${id}`,token, { method: "PUT", body: JSON.stringify(userData) });
 
-export { getUsersAPI };
+export const updateUserStatus = async (token,id, status) => 
+    fetcher(`http://localhost:8000/api/users/${id}/status`,token, { method: "PATCH", body: JSON.stringify({ status }) });
+
+export const updateUserPassword = async (token,id, password) => 
+    fetcher(`http://localhost:8000/api/users/${id}/password`,token, { method: "PATCH", body: JSON.stringify({ password, password_confirmation: password }) });
+

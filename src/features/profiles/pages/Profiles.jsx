@@ -1,4 +1,4 @@
-import { useRef } from "react"
+import { useEffect, useRef } from "react"
 import { CustomTable, CustomActions, Loading, Error } from "../../../components/index"
 import permissionsDefault  from '../../../mocks/permissions.json'
 import { useProfiles } from "../hooks/useProfiles";
@@ -25,14 +25,18 @@ const columns = [
 
 export const Profiles = () => {
 
-    const firstLoad = useRef(true);
+    const isMounted = useRef(true);
 
     const { profiles, loading, errorProfiles, getProfiles, activateProfile, deactivateProfile, editProfile } = useProfiles()
 
-    if (firstLoad.current) {
-        getProfiles();
-        firstLoad.current = false;
-    }
+    useEffect(() => {
+        if (isMounted.current) {
+            getProfiles();
+        }
+        return () => {
+            isMounted.current = false;
+        }
+    }, [getProfiles])
 
     const Actions = [
         {

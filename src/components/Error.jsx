@@ -1,8 +1,11 @@
 
-export const Error = ({message}) => {
+export const Error = ({icon, tittle, text}) => {
+  // regresar un sweetalert con el icono, titulo y texto
   return (
-    <div style={{ padding: '20px' }}>
-      {message}
-    </div>
-  )
+    Swal.fire({
+      icon: icon,
+      title: tittle,
+      text: text,
+    })
+  );
 }

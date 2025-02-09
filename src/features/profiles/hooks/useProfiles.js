@@ -1,46 +1,46 @@
-import { useState } from "react"
-import {getProfilesAPI} from '../services/profiles'
+import { useState } from "react";
+import { getProfilesAPI, createProfileAPI, updateProfileAPI, deleteProfileAPI } from "../services/profiles"; // Importar los servicios
 
 export const useProfiles = () => {
 
-    const [profiles, setProfiles] = useState([])
-    const [loading, setLoading] = useState(false)
-    const [errorProfiles, setErrorProfiles] = useState(null)
+    const [profiles, setProfiles] = useState([]);
+    const [errorProfiles, setErrorProfiles] = useState(null);
 
     const getProfiles = async () => {
-        setLoading(true)
-        setErrorProfiles(null)
         try {
-            const newProfiles = await getProfilesAPI()
-            setProfiles(newProfiles)
-        } catch (error) {
-            setErrorProfiles(error)
-        } finally {
-            setLoading(false)
+            const newProfiles = await getProfilesAPI(requestGet);
+            setProfiles(newProfiles);
+        } catch (e) {
+            setErrorProfiles(error || "Error al obtener perfiles");
         }
     };
 
-    const activateProfile = async (id) => {
-        console.log(`Activating profile with ID ${id}`);
-        // Aquí podrías llamar a una API para activar al perfil
-        const updatedProfiles = profiles.map((profile) =>
-            profile.id === id ? { ...profile, status: 1 } : profile
-        );
-        setProfiles(updatedProfiles);
+    const createProfile = async (profileData) => {
+        try {
+            await createProfileAPI(requestPost, profileData);
+            getProfiles(); // Refrescar la lista de perfiles después de la creación
+        } catch (e) {
+            setErrorProfiles(error || "Error al crear perfil");
+        }
     };
 
-    const deactivateProfile = async (id) => {
-        console.log(`Deactivating profile with ID ${id}`);
-        const updatedProfiles = profiles.map((profile) =>
-            profile.id === id ? { ...profile, status: 2 } : profile
-        );
-        setProfiles(updatedProfiles);
+    const updateProfile = async (profileId, profileData) => {
+        try {
+            await updateProfileAPI(requestPut, profileId, profileData);
+            getProfiles(); // Refrescar la lista de perfiles después de la actualización
+        } catch (e) {
+            setErrorProfiles(error || "Error al actualizar perfil");
+        }
     };
 
-    const editProfile = (id) => {
-        console.log(`Editing profile with ID ${id}`);
-        // Lógica para abrir un modal o redirigir a una pantalla de edición
+    const deleteProfile = async (profileId) => {
+        try {
+            await deleteProfileAPI(requestDelete, profileId);
+            getProfiles(); // Refrescar la lista de perfiles después de eliminar
+        } catch (e) {
+            setErrorProfiles(error || "Error al eliminar perfil");
+        }
     };
 
-    return { profiles, loading, errorProfiles, getProfiles, activateProfile, deactivateProfile, editProfile }
+    return { profiles, loading, errorProfiles, getProfiles, createProfile, updateProfile, deleteProfile };
 }

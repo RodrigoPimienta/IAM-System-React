@@ -1,45 +1,51 @@
-import {useState} from 'react'
-import { getUsersAPI } from '../services/users'
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { getUsers, createUser, updateUser, updateUserStatus } from "../services/users";  // Importar los servicios
+import { useAuth } from "../../../hooks/useAuth"; // Aquí sí puedes usar el hook
+
 export const useUsers = () => {
-    const [resUsers, setUsers] = useState([])
-    const [loading, setLoading] = useState(false)
-    const [errorUsers, setErrorUsers] = useState(null)
+     const { auth } = useAuth(); // Aquí sí puedes usar el hook
+    const token = auth?.token; // Obtener el token de autenticación
+    
+    const queryClient = useQueryClient();
 
+    const mapUsers = (user) => ({
+        id_user: user.id,
+        name: user.name,
+        email: user.email,
+        id_profile: user.profile[0].id_profile,
+        profile: user.profile[0].profile,
+        status: user.status,
+    });
 
-    const getUsers = async () => {
-        setLoading(true)
-        setErrorUsers(null)
-        try {
-            const newUsers = await getUsersAPI()
-            setUsers(newUsers)
-        } catch (error) {
-            setErrorUsers(error)
-        } finally {
-            setLoading(false)
-        }
-    }
+    // Obtener usuarios (React Query maneja loading/error automáticamente)
+    const { data: resUsers, isLoading: loading, error } = useQuery({
+        queryKey: ["users"],
+        queryFn: async () => {
+            const response = await getUsers(token);
+            return response.data ? response.data.map(mapUsers) : [];
+        },
+    });
 
-    const activateUser = async (id) => {
-        console.log(`Activating user with ID ${id}`);
-        // Aquí podrías llamar a una API para activar al usuario
-        const updatedUsers = resUsers.map((user) =>
-            user.id === id ? { ...user, status: 1 } : user
-        );
-        setUsers(updatedUsers);
-    };
+    // Mutaciones
+    const postUser = useMutation({
+        mutationFn: async (userData) => createUser(token,userData),
+        onSuccess: () => queryClient.invalidateQueries(["users"]),
+    });
 
-    const deactivateUser = async (id) => {
-        console.log(`Deactivating user with ID ${id}`);
-        const updatedUsers = resUsers.map((user) =>
-            user.id === id ? { ...user, status: 2 } : user
-        );
-        setUsers(updatedUsers);
-    };
+    const editUser = useMutation({
+        mutationFn: async ({ id, userData }) => updateUser(token,id, userData),
+        onSuccess: () => queryClient.invalidateQueries(["users"]),
+    });
 
-    const editUser = (id) => {
-        console.log(`Editing user with ID ${id}`);
-        // Lógica para abrir un modal o redirigir a una pantalla de edición
-    };
+    const updateStatus = useMutation({
+        mutationFn: async ({id, status }) => updateUserStatus(token, id, status),
+        onSuccess: () => queryClient.invalidateQueries(["users"]),
+    });
 
-    return { resUsers, loading, errorUsers, getUsers, activateUser, deactivateUser, editUser }
-}
+    const updatePassword = useMutation({
+        mutationFn: async ({id, password }) => updateUserPassword(token,id, password),
+        onSuccess: () => queryClient.invalidateQueries(["users"]),
+    });
+
+    return { resUsers, loading, error, postUser, editUser, updateStatus, updatePassword };
+};

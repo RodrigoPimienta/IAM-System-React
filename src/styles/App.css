@@ -26,6 +26,12 @@ footer {
 }
 
 
+.menu {
+  display: flex;
+  justify-content:left;
+  gap: 1rem;
+}
+
 .linkCustom {
   color: #fff;
   text-decoration: none;

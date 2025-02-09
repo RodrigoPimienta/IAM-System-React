@@ -1,40 +1,49 @@
-// context/auth.js
-import { createContext, useReducer } from "react";
-import { authReducer, initialState, LOGIN_ACTIONS } from "../reducers/auth";
-import { loginAPI } from "../services/auth";
+import { createContext, useState, useEffect } from "react";
+import { loginUser, logoutUser } from "../services/auth";  // Importar los servicios
 
 export const AuthContext = createContext(null);
 
-function useAuthReducer() {
-    const [state, dispatch] = useReducer(authReducer, initialState);
+export function AuthProvider({ children }) {
+    const [auth, setAuth] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
 
-    const login = async (credentials) => {
-        dispatch({ type: LOGIN_ACTIONS.SET_LOADING, payload: true });
+    // Función para manejar el inicio de sesión
+    const login = async (email, password) => {
+        setIsLoading(true);
         try {
-            const response = await loginAPI(credentials);
-            if (response.error === false) {
-                dispatch({ type: LOGIN_ACTIONS.LOGIN, payload: response.data });
-            } else {
-                dispatch({ type: LOGIN_ACTIONS.SET_ERROR, payload: response.message });
+            const response = await loginUser(email, password);
+            if (response.data) {
+                setAuth({
+                    id_user: response.data.id,
+                    username: response.data.name,
+                    email: response.data.email,
+                    status: response.data.status,
+                    token: response.data.token
+                });
             }
         } catch (error) {
-            dispatch({ type: LOGIN_ACTIONS.SET_ERROR, payload: "Unexpected error occurred" });
+            setError(error);
         } finally {
-            dispatch({ type: LOGIN_ACTIONS.SET_LOADING, payload: false });
+            setIsLoading(false);
         }
     };
 
-    const logout = () => {
-        dispatch({ type: LOGIN_ACTIONS.LOGOUT });
+    // Función para manejar el cierre de sesión
+    const logout = async () => {
+        setIsLoading(true);
+        try {
+            await logoutUser();
+            setAuth(null);
+        } catch (error) {
+            setError(error);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
-    return { state, login, logout };
-}
-
-export function AuthProvider({ children }) {
-    const { state, login, logout } = useAuthReducer();
     return (
-        <AuthContext.Provider value={{ auth: state, login, logout }}>
+        <AuthContext.Provider value={{ auth, login, logout, isLoading, error }}>
             {children}
         </AuthContext.Provider>
     );
