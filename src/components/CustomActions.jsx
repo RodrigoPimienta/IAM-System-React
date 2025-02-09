@@ -1,18 +1,16 @@
-export const CustomActions = ({ row, actions =[], permissions = [] }) => {
-
-    const getPermission = (key) => permissions.find((perm) => perm.key === key);
+export const CustomActions = ({ row, actions = [], permissions = {} }) => {
     return (
         <>
-        {
-            actions.map((action) => {
-                return action.Condition(row) && getPermission(action.key) && (
-                    <button key={action.key} onClick={() => action.Handle(row.id)}
+            {actions.map((action) => {
+                return action.condition(row) && (
+                    <button key={action.key} onClick={() => action.handle(row.id)}
                         className={`btn btn_${action.key}`}>
-                        {getPermission(action.key).Name}
+                        {
+                            action.label || permissions[action.key]
+                    }
                     </button>
                 );
-            })
-        }
+            })}
         </>
     );
 };
