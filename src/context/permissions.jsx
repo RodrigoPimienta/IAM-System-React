@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { fetcher } from "../services/fetcher";
 import { useAuth } from "../hooks/useAuth"; // Aquí sí puedes usar el hook
+import { getPermissions} from "../services/auth";  // Importar los servicios
 
 export const PermissionsContext = createContext(null);
 
@@ -9,9 +9,6 @@ const mapPermissions = (permission) => {
     return permission?.access || {};
 };
 
-const getPermissions = async (token) => {
-    return await fetcher("http://localhost:8000/api/auth/permissions", token);
-};
 
 export function PermissionsProvider({ children }) {
     const { auth } = useAuth(); // Aquí sí puedes usar el hook

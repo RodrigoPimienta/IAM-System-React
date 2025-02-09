@@ -1,5 +1,5 @@
-export const fetcher = async (url, token, options = {}) => {
-    if (!token) {
+export const fetcher = async (url, token, options = {}, includeToken = true) => {
+    if (!token && includeToken) {
         throw new Error("No hay token de autenticación");
     }
 
