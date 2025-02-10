@@ -67,7 +67,7 @@ export const Users = () => {
             {isLoading && <Loading />}
             {error && <Error text={error.message} />}
             <div className="container-fluid">
-                <CustomPage permissionsPage={permissionsPage} actions={actions} actionsHeader={actionsHeader} rows={resUsers || []} columns={columns} />
+                <CustomPage title='Users' permissionsPage={permissionsPage} actions={actions} actionsHeader={actionsHeader} rows={resUsers || []} columns={columns} />
             </div>
         </>
     );

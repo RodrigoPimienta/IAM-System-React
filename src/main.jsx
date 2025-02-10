@@ -6,7 +6,7 @@ import './styles/index.css';
 import './styles/app.css';
 import { AuthProvider, PermissionsProvider } from './context/index';
 import { PublicLayout, AdminLayout, ProtectedRoute, Login } from './layouts/index';
-import { HomePublic, Users, Profiles, Modules, ModulesRols, ModulesPermissions, HomePrivate } from './pages/index';
+import { HomePublic, Users, Profiles, Modules, ModulesRols, ModulesPermissions, HomePrivate, AddUser } from './pages/index';
 
 // 🔹 Crear un cliente de React Query
 const queryClient = new QueryClient();
@@ -39,7 +39,7 @@ ReactDOM.createRoot(root).render(
             >
               <Route index element={<HomePrivate />} />
               <Route path="users" element={<Users />} />
-              <Route path="users/add" element={<>Add users</>} />
+              <Route path="users/add" element={<AddUser />} />
               <Route path="profiles" element={<Profiles />} />
               <Route path="modules" element={<Modules />} />
               <Route path="modules/:moduleId/rols" element={<ModulesRols />} />
