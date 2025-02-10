@@ -18,7 +18,7 @@ export const useUsers = () => {
     });
 
     // Obtener usuarios (React Query maneja loading/error automáticamente)
-    const { data: resUsers, isLoading: loading, error } = useQuery({
+    const { data: resUsers, isLoading, error } = useQuery({
         queryKey: ["users"],
         queryFn: async () => {
             const response = await getUsers(token);
@@ -47,5 +47,5 @@ export const useUsers = () => {
         onSuccess: () => queryClient.invalidateQueries(["users"]),
     });
 
-    return { resUsers, loading, error, postUser, editUser, updateStatus, updatePassword };
+    return { resUsers, isLoading, error, postUser, editUser, updateStatus, updatePassword };
 };

@@ -1,7 +1,7 @@
-import {useAuth} from '../../../hooks/useAuth';
 import {usePermissions} from '../../../hooks/usePermissions';
 import { useUsers } from "../hooks/useUsers";
-import { CustomTable, CustomActions, Loading, Error } from "../../../components";
+import { Loading, Error , CustomPage} from "../../../components";
+import { useNavigate } from 'react-router';
 
 const moduleKey = 'users';
 const statusMap = {
@@ -28,9 +28,8 @@ const columns = [
 
 export const Users = () => {
     const { permissions } = usePermissions();
-    const { auth } = useAuth();
+    const permissionsPage = permissions[moduleKey]?.permissions || {};
     const { resUsers, isLoading, error, editUser, updateStatus, updatePassword } = useUsers();
-
     const actions = [
         {
             key: 'update',
@@ -58,17 +57,18 @@ export const Users = () => {
         }
     ];
 
-    if (isLoading) return <Loading />;
-    if (error) return <Error message={error.message} />;
-
-    const ActionsComponent = (props) => (
-        <CustomActions {...props} permissions={permissions[moduleKey]?.permissions || {}} actions={actions} />
-    );
-
+    const navigate = useNavigate();
+    const actionsHeader = [
+        {key: 'create', label: 'Add User', handle: () => {navigate('/admin/users/add')}},
+    ]
+    
     return (
-        <div className="container-fluid">
-            <h2>Users</h2>
-            <CustomTable columns={columns} rows={resUsers || []} ActionsComponent={ActionsComponent} />
-        </div>
+        <>
+            {isLoading && <Loading />}
+            {error && <Error text={error.message} />}
+            <div className="container-fluid">
+                <CustomPage permissionsPage={permissionsPage} actions={actions} actionsHeader={actionsHeader} rows={resUsers || []} columns={columns} />
+            </div>
+        </>
     );
 };
