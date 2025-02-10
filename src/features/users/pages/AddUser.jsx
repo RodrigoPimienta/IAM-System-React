@@ -21,11 +21,12 @@ export const AddUser = () => {
           permissionsPage={permissionsPage}
           actionsHeader={[]}
           fields={[
-            { id: "name", input: "input", type: "text", label: "Name", placeholder: "Enter name", required: true },
-            { id: "email", input: "input", type: "email", label: "Email", placeholder: "Enter email", required: true },
-            { id: "password", input: "input", type: "password", label: "Password", placeholder: "Enter password", required: true },
+            { key: "name", input: "input", type: "text", label: "Name", placeholder: "Enter name", required: true },
+            { key: "email", input: "input", type: "email", label: "Email", placeholder: "Enter email", required: true },
+            { key: "password", input: "input", type: "password", label: "Password", placeholder: "Enter password", required: true },
+            { key: "password_confirmation", input: "input", type: "password", label: "Password confirmation", placeholder: "Enter password", required: true, validation: "same:password" },
             {
-              id: "profile",
+              key: "profile",
               input: "select",
               label: "Profile",
               required: true,
@@ -34,26 +35,16 @@ export const AddUser = () => {
                 { value: "1", label: "Admin" },
                 { value: "2", label: "User" },
               ],
-            },
-            {
-              id: "status",
-              input: "select",
-              label: "Status",
-              required: true,
-              init: "Select status",
-              options: [
-                { value: "1", label: "Active" },
-                { value: "0", label: "Inactive" },
-              ],
-            },
+            }
           ]}
           buttons={[
-            { key: "add", label: "Add", type: "submit" }, // Este botón ahora usará submit
             { key: "cancel", label: "Cancel", handle: () => navigate("/admin/users") },
+            { key: "add", label: "Submit", type: "submit" }, // Este botón ahora usará submit
           ]}
           onSubmit={handleAddUser} // Se ejecutará solo al enviar el formulario
         />
       </>
     );
   };
+
   

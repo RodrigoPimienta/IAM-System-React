@@ -43,49 +43,54 @@ footer {
   text-decoration: none;
 }
 
+.errorMessage {
+  color: red;
+}
+
+.small-swal-popup {
+  width: 500px !important;  /* Reduce el ancho */
+  font-size: 14px !important; /* Reduce el tamaño del texto */
+  padding: 10px !important; /* Ajusta el padding */
+}
+
+.button-group {
+  display: flex;
+  justify-content: right;
+  gap: 1rem;
+}
+
+
 .rowActions {
   display: flex;
   justify-content:left;
   gap: 1rem;
 }
 
+button[type="submit"] {
+  width: min-content;
+}
+
+
 .btn {
   padding: 0.5rem 1rem;
   border-radius: 5px;
   cursor: pointer;
-}
-
-.btn {
   border: 1px solid black;
 }
 
-.btn_activate  {
+.btn_create, .btn_add, .btn_activate {
   background-color: #28a745;
   color: #fff;
 }
 
-.btn_inactivate {
+
+.btn_delete, .btn_cancel, .btn_inactivate {
   background-color: #dc3545;
   color: #fff;
 }
 
-.btn_edit {
+.btn_edit, .btn_update {
   background-color: #007bff;
   color: #fff;
 }
 
-.btn_delete {
-  background-color: #dc3545;
-  color: #fff;
-}
-
-
-.btn_viewPermissions{
-  background-color: #b5973c;
-  color: #fff;
-}
-
-.btn_viewUsers{
-  background-color: #17a2b8;
-  color: #fff;
-}
