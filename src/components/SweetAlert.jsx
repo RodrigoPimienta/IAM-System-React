@@ -1,3 +1,4 @@
+import Swal from "sweetalert2";
 
 export const SweetAlert = ({icon, tittle, text}) => {
     // regresar un sweetalert con el icono, titulo y texto
