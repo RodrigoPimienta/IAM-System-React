@@ -98,7 +98,7 @@ export const CustomForm = ({ title, permissionsPage, actionsHeader = [], fields 
                   placeholder={field.placeholder}
                   value={formData[field.key]}
                   onChange={handleChange}
-                  required={field.required}
+                  {...(field.required ? { required: true } : {})} // Only add required if it's true
                   className="form-control"
                 />
               )}
@@ -107,7 +107,7 @@ export const CustomForm = ({ title, permissionsPage, actionsHeader = [], fields 
                   id={field.key}
                   value={formData[field.key]}
                   onChange={handleChange}
-                  required={field.required}
+                  {...(field.required ? { required: true } : {})} // Only add required if it's true
                   className="form-control"
                 >
                   {field.init && <option value="">{field.init}</option>}

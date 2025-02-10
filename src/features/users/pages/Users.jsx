@@ -27,9 +27,10 @@ const columns = [
 ];
 
 export const Users = () => {
+    const navigate = useNavigate();
     const { permissions } = usePermissions();
     const permissionsPage = permissions[moduleKey]?.permissions || {};
-    const { resUsers, isLoading, error, editUser, updateStatus, updatePassword } = useUsers();
+    const { resUsers, isLoading, isLoadingUsers, error, errorUsers, editUser, updateStatus, updatePassword } = useUsers();
     const actions = [
         {
             key: 'update',
@@ -57,15 +58,14 @@ export const Users = () => {
         }
     ];
 
-    const navigate = useNavigate();
     const actionsHeader = [
         {key: 'create', label: 'New user', handle: () => {navigate('/admin/users/add')}},
     ]
     
     return (
         <>
-            {isLoading && <Loading />}
-            {error && <Error text={error.message} />}
+            {isLoading || isLoadingUsers && <Loading />}
+            {error || errorUsers && <Error text={error.message || errorUsers.message} />}
             <div className="container-fluid">
                 <CustomPage title='Users' permissionsPage={permissionsPage} actions={actions} actionsHeader={actionsHeader} rows={resUsers || []} columns={columns} />
             </div>
