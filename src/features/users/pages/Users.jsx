@@ -36,7 +36,7 @@ export const Users = () => {
             key: 'update',
             label: 'Edit',
             condition: (row) => true,
-            handle: (id) => editUser.mutate(id)
+            handle: (row) => navigate(`/admin/users/${row.id_user}/update`)
         },
         {
             key: 'updateStatus',
