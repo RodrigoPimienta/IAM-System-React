@@ -41,7 +41,7 @@ export const AddUser = () => {
       <>
        {isLoading && <Loading />}
         <CustomForm
-          title="Add User"
+          title="Add user"
           permissionsPage={permissionsPage}
           actionsHeader={[]}
           fields={[
