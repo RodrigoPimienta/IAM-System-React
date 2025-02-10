@@ -1,6 +1,6 @@
 import { CustomTable, CustomActions,CustomHeader  } from "./index";
 
-export const CustomPage = ({permissionsPage, actions, actionsHeader, rows, columns}) => {
+export const CustomPage = ({title, permissionsPage, actions, actionsHeader, rows, columns}) => {
     const ActionsComponent = (props) => (
         <CustomActions {...props} permissions={permissionsPage} actions={actions} />
     );
@@ -10,7 +10,7 @@ export const CustomPage = ({permissionsPage, actions, actionsHeader, rows, colum
         <section className="section">
             {/* Divide en 2, para inster a la izquiera el titutlo y a la derecha imprimir el boton de agregar */}
             <section className="section headerSection">
-                <CustomHeader title='Users' permissions={permissionsPage} actions={actionsHeader} />
+                <CustomHeader title={title} permissions={permissionsPage} actions={actionsHeader} />
             </section>
         </section>
         <section className="section">
