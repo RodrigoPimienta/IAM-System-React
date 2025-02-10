@@ -52,7 +52,7 @@ export const useUsers = () => {
 
     // Mutación para editar usuario
     const editUser = useMutation({
-        mutationFn: async ({ id, userData }) => updateUser(token, id, userData),
+        mutationFn: async ({ id_user, userData }) => updateUser(token, id_user, userData),
         onMutate: () => handleMutationState(true),
         onSuccess: () => {
             queryClient.invalidateQueries(["users"]);

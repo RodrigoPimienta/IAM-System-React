@@ -2,10 +2,11 @@ import { useState } from "react";
 import { CustomHeader } from "./CustomHeader";
 import Swal from "sweetalert2";
 
-export const CustomForm = ({ title, permissionsPage, actionsHeader = [], fields = [], buttons = [], onSubmit }) => {
+export const CustomForm = ({ title, permissionsPage, actionsHeader = [], fields = [], buttons = [], defaultValues = {}, onSubmit }) => {
   const [formData, setFormData] = useState(
-    fields.reduce((acc, field) => ({ ...acc, [field.key]: field.defaultValue || "" }), {})
+    fields.reduce((acc, field) => ({ ...acc, [field.key]: field.defaultValue || defaultValues[field.key] || "" }), {})
   );
+
   const [errors, setErrors] = useState({});
 
   // Manejar cambios en los inputs
@@ -88,6 +89,8 @@ export const CustomForm = ({ title, permissionsPage, actionsHeader = [], fields 
       </section>
       <section className="section">
         <form onSubmit={handleSubmit}>
+
+          
           {fields.map((field, index) => (
             <p key={index} className="form-group">
               <label htmlFor={field.key}>{field.label}</label>
