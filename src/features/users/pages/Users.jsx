@@ -59,7 +59,7 @@ export const Users = () => {
 
     const navigate = useNavigate();
     const actionsHeader = [
-        {key: 'create', label: 'Add User', handle: () => {navigate('/admin/users/add')}},
+        {key: 'create', label: 'New user', handle: () => {navigate('/admin/users/add')}},
     ]
     
     return (
