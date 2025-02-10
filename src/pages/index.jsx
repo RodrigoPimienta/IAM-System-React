@@ -5,5 +5,4 @@ export { ModulesRols } from "../features/modules/pages/ModulesRols"
 export { ModulesPermissions } from "../features/modules/pages/ModulesPermissions"
 export { HomePublic } from "./HomePublic"
 export { HomePrivate} from "./HomePrivate"
-export { Catalogs } from "./Catalogs"
 

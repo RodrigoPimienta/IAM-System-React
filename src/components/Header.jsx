@@ -48,7 +48,7 @@ export const Header = () => {
                   {permissions && Object.keys(permissions).length > 0 ? (
                     Object.entries(permissions).map(([key, value]) => (
                       <li key={key}>
-                        <NavLink to={`/admin/catalogs/${key}`} className={({ isActive }) => (isActive ? "active" : "")}>
+                        <NavLink to={`/admin/${key}`} className={({ isActive }) => (isActive ? "active" : "")}>
                           {value.name} {/* Acceso al nombre del módulo */}
                         </NavLink>
                       </li>

@@ -1,5 +1,7 @@
 export { Header } from "./Header"
 export {CustomTable} from "./CustomTable"
 export {CustomActions} from "./CustomActions"
+export {CustomHeader} from "./CustomHeader"
+export {CustomPage} from "./CustomPage"
 export {Loading} from "./Loading"
 export {Error} from "./Error"
