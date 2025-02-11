@@ -1,10 +1,11 @@
 import { useEffect } from "react";
 import { useAuth } from "../hooks/useAuth";
-import { Error, Loading } from "../components";
+import { Loading } from "../components";
 import { useNavigate } from "react-router";
+import Swal from "sweetalert2";
 
 export const Login = () => {
-    const { auth, login, logout, isLoading, error } = useAuth();
+    const { auth, login, isLoading, error } = useAuth();
         
     const navigate = useNavigate();
 
@@ -18,17 +19,14 @@ export const Login = () => {
     const handleLogin = () => {
         login({ email: "test@example.com", password: "123456", password_confirmation: "123456" });
     };
-
       // Si hay un error, mostrar un SweetAlert
-      useEffect(() => {
-        if (error) {
-          Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: "An error occurred while logging in",
-          });
-        }
-      }, [error]);
+      if (error && !isLoading) {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: error?.message,
+        });
+      }
 
     return (
         <>
