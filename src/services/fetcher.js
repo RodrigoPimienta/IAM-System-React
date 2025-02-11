@@ -14,7 +14,9 @@ export const fetcher = async (url, token, options = {}, includeToken = true) => 
 
     if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || `Error ${response.status}`);
+        const error = new Error(errorData.message || `Error ${response.status}`);
+        error.status = response.status; // Agrega el código de estado al objeto de error
+        throw error;
     }
 
     return response.json();
