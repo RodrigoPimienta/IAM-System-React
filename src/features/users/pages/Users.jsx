@@ -1,15 +1,17 @@
 import {usePermissions} from '../../../hooks/usePermissions';
 import { useUsers } from "../hooks/useUsers";
-import { Loading, Error , CustomPage} from "../../../components";
+import { Loading , CustomPage} from "../../../components";
 import { useNavigate } from 'react-router';
+import Swal from "sweetalert2";
+import { useAuth } from '../../../hooks/useAuth';
 
 const moduleKey = 'users';
+const requiredPermision = 'show';
 const statusMap = {
+    0: 'Inactive',
     1: 'Active',
-    2: 'Inactive',
-    3: 'Suspended'
 };
-
+ 
 const columns = [
     { header: 'Name', key: 'name' },
     { header: 'Email', key: 'email' },
@@ -28,9 +30,51 @@ const columns = [
 
 export const Users = () => {
     const navigate = useNavigate();
-    const { permissions } = usePermissions();
+    const {kickOut} = useAuth();
+    const { permissions, refetch } = usePermissions();
     const permissionsPage = permissions[moduleKey]?.permissions || {};
-    const { resUsers, isLoading, isLoadingUsers, error, errorUsers, editUser, updateStatus, updatePassword } = useUsers();
+
+    if (Object.keys(permissionsPage).length === 0 || !permissionsPage[requiredPermision]) {
+        navigate('/admin');
+        return <Loading />;
+    }
+    
+    const { resUsers, isLoading, error, updateStatus, updatePassword, handleMutationState } = useUsers();
+    const handleErros = {
+        403: () => refetch(),
+        401: (error) => kickOut(null),
+      }
+    
+    const handleUpdateStatus = async (row, status) => {
+        updateStatus.mutate(
+            { id_user: row.id_user, status },
+            {
+                onSuccess: async () => {
+                    await Swal.fire({
+                        icon: "success",
+                        title: "Success",
+                        text: "Status updated successfully",
+                        showConfirmButton: true,
+                        timer: 4000,
+                    });
+                    navigate("/admin/users");
+                },
+                    onError: (err) => {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: err.message,
+                        }).then(() => {
+                            if(handleErros[err?.status]){
+                                handleErros[err.status](err);
+                            }
+                        
+                    });
+                },
+            }
+        );
+    };
+    
     const actions = [
         {
             key: 'update',
@@ -42,13 +86,13 @@ export const Users = () => {
             key: 'updateStatus',
             label: 'Disable',
             condition: (row) => row.status === 1,
-            handle: (id) => updateStatus.mutate({id_user, status: 0})
+            handle: (row) => handleUpdateStatus(row, row.status === 1 ? 0 : 1),
         },
         {
             key: 'updateStatus',
             label: 'Enable',
             condition: (row) => row.status === 0,
-            handle: (id) => updateStatus.mutate({id_user, status: 1})
+            handle: (row) => handleUpdateStatus(row, row.status === 1 ? 0 : 1),
         },
         {
             key: 'updatePassword',
@@ -61,11 +105,27 @@ export const Users = () => {
     const actionsHeader = [
         {key: 'create', label: 'New user', handle: () => {navigate('/admin/users/add')}},
     ]
-    
+
+    if(error  && !isLoading){ 
+        Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: error?.message,
+            }).then((result) => {
+                if(result.isConfirmed){
+                    if(handleErros[error?.status]){
+                        handleErros[error.status](error);
+                    }
+                    handleMutationState(false);
+                }
+            });
+    }
+
     return (
         <>
-            {isLoading || isLoadingUsers && <Loading />}
-            {error || errorUsers && <Error text={error.message || errorUsers.message} />}
+            {isLoading && <Loading />}
+
+            {/* {error || errorUsers && <Error text={error.message || errorUsers.message} />} */}
             <div className="container-fluid">
                 <CustomPage title='Users' permissionsPage={permissionsPage} actions={actions} actionsHeader={actionsHeader} rows={resUsers || []} columns={columns} />
             </div>
