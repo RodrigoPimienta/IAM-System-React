@@ -1,7 +1,7 @@
 import { createContext } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useAuth } from "../hooks/useAuth"; // Aquí sí puedes usar el hook
-import { getPermissions} from "../services/auth";  // Importar los servicios
+import { useAuth } from "../hooks/useAuth";
+import { getPermissions } from "../services/auth";
 
 export const PermissionsContext = createContext(null);
 
@@ -9,29 +9,31 @@ const mapPermissions = (permission) => {
     return permission?.access || {};
 };
 
-
 export function PermissionsProvider({ children }) {
-    const { auth } = useAuth(); // Aquí sí puedes usar el hook
-    const token = auth?.token; // Obtener el token de autenticación
+    const { auth } = useAuth();
+    const token = auth?.token;
 
-    const { data: permissions, isLoading, error, refetch } = useQuery({
+    const { data, isFetching, isError, error, refetch } = useQuery({
         queryKey: ["permissions"],
         queryFn: async () => {
             const response = await getPermissions(token);
             return response.data ? mapPermissions(response.data) : {};
         },
-        enabled: !!token, // Solo ejecuta la query si hay un token
+        enabled: !!token,
         retry: 3,
         refetchOnWindowFocus: false,
     });
 
+    const permissions = isError && error?.status !== 429 ? {} : data || {};
+
     return (
-        <PermissionsContext.Provider 
+        <PermissionsContext.Provider
             value={{
                 permissions,
-                isLoading,
+                isFetching,
                 error,
-                updatePermissions: refetch,
+                isError,
+                refetch,
             }}
         >
             {children}
