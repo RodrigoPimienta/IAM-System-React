@@ -10,6 +10,7 @@ export function AuthProvider({ children }) {
 
     // Función para manejar el inicio de sesión
     const login = async (email, password) => {
+        setError(null);
         setIsLoading(true);
         try {
             const response = await loginUser(email, password);
@@ -32,6 +33,7 @@ export function AuthProvider({ children }) {
     // Función para manejar el cierre de sesión
     const logout = async () => {
         setIsLoading(true);
+        setError(null);
         try {
             await logoutUser();
             setAuth(null);
@@ -42,8 +44,13 @@ export function AuthProvider({ children }) {
         }
     };
 
+    const kickOut = (error) => {
+        setAuth(null);
+        setError(error); // Establece el error
+    };
+
     return (
-        <AuthContext.Provider value={{ auth, login, logout, isLoading, error }}>
+        <AuthContext.Provider value={{ auth, login, logout, isLoading, error, kickOut }}>
             {children}
         </AuthContext.Provider>
     );
