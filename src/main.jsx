@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"; // 🔹 Importar React Query
 import './styles/index.css';
 import './styles/app.css';
-import { AuthProvider, PermissionsProvider } from './context/index';
+import { AuthProvider, PermissionsProvider, ErrorProvider } from './context/index';
 import { PublicLayout, AdminLayout, ProtectedRoute, Login } from './layouts/index';
 import { HomePublic, Users, Profiles, Modules, ModulesRols, ModulesPermissions, HomePrivate, AddUser, UpdateUser } from './pages/index';
 
@@ -16,7 +16,7 @@ const root = document.getElementById("root");
 ReactDOM.createRoot(root).render(
   <AuthProvider>
     <StrictMode>
-      <QueryClientProvider client={queryClient}> {/* 🔹 Agregar el proveedor aquí */}
+      <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <Routes>
             {/* Rutas públicas */}
@@ -31,9 +31,11 @@ ReactDOM.createRoot(root).render(
               path="/admin"
               element={
                 <PermissionsProvider>
-                  <ProtectedRoute>
-                    <AdminLayout />
-                  </ProtectedRoute>
+                  <ErrorProvider> {/* Agrega ErrorProvider aquí */}
+                    <ProtectedRoute>
+                      <AdminLayout />
+                    </ProtectedRoute>
+                  </ErrorProvider>
                 </PermissionsProvider>
               }
             >

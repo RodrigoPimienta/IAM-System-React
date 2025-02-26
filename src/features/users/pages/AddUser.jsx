@@ -1,9 +1,8 @@
 import { useNavigate } from "react-router";
-import { usePermissions } from "../../../hooks/usePermissions";
-import { useUsers } from "../hooks/useUsers";
+import { usePermissions, useError } from "../../../hooks/";
 import { Loading , CustomForm} from "../../../components";
+import { useUsers } from "../hooks/useUsers";
 import Swal from "sweetalert2";
-import { useAuth } from "../../../hooks/useAuth";
 
 
 const moduleKey = "users";
@@ -11,18 +10,14 @@ const requiredPermision = 'create';
 
 export const AddUser = () => {
     const navigate = useNavigate();
-    const {kickOut} = useAuth();
-    const { permissions, refetch } = usePermissions();
+    const { permissions } = usePermissions();
+    const { handleGlobalError } = useError();
     const permissionsPage = permissions[moduleKey]?.permissions || {};
     if (Object.keys(permissionsPage).length === 0 || !permissionsPage[requiredPermision]) {
         navigate('/admin/users');
         return <Loading />;
     }
     const {postUser, isLoading} = useUsers({enabled: false});
-    const handleErros = {
-      403: () => refetch(),
-      401: (error) => kickOut(null),
-    }
 
     const handleAddUser = (formData) => {
       postUser.mutate(formData, {
@@ -37,19 +32,7 @@ export const AddUser = () => {
                   navigate("/admin/users");
               });
           },
-          onError: (err) => {
-              Swal.fire({
-                  icon: "error",
-                  title: "Error",
-                  text: err.message,
-              }).then((result) => {
-                if(result.isConfirmed){
-                   if(handleErros[err?.status]){
-                    handleErros[err.status](err);
-                  }
-                }
-            });
-          },
+          onError: (error) => handleGlobalError(error),
       });
   };
   

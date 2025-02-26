@@ -1,27 +1,13 @@
-import { Outlet, useNavigate } from "react-router";
+import { Outlet } from "react-router";
+import { usePermissions, useError } from "../hooks/";
 import { Header, Loading } from "../components/index";
-import { usePermissions } from "../hooks/usePermissions";
-import { useAuth } from "../hooks/useAuth";
-import Swal from "sweetalert2";
 
 export const AdminLayout = () => {
   const { isFetching, error, refetch } = usePermissions();
-  const { kickOut } = useAuth();
-  const navigate = useNavigate();
+  const { handleGlobalError } = useError();
 
-
-  if (error && !isFetching) {
-    if (error?.status === 401) {
-      kickOut(error); // Cierra la sesión del usuario
-      navigate("/login"); // Redirige a login
-      return null; // Evita renderizar el layout mientras se redirige
-    }
-
-    Swal.fire({
-      icon: "error",
-      title: "Error",
-      text: error?.message,
-    });
+  if(error && !isFetching){
+    handleGlobalError(error);
   }
 
   return (

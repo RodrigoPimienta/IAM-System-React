@@ -1,9 +1,8 @@
-import {usePermissions} from '../../../hooks/usePermissions';
-import { useUsers } from "../hooks/useUsers";
-import { Loading , CustomPage} from "../../../components";
 import { useNavigate } from 'react-router';
+import { usePermissions, useError } from "../../../hooks/";
+import { Loading , CustomPage} from "../../../components";
+import { useUsers } from "../hooks/useUsers";
 import Swal from "sweetalert2";
-import { useAuth } from '../../../hooks/useAuth';
 
 const moduleKey = 'users';
 const requiredPermision = 'show';
@@ -30,8 +29,8 @@ const columns = [
 
 export const Users = () => {
     const navigate = useNavigate();
-    const {kickOut} = useAuth();
-    const { permissions, refetch } = usePermissions();
+    const { permissions } = usePermissions();
+    const { handleGlobalError } = useError();
     const permissionsPage = permissions[moduleKey]?.permissions || {};
 
     if (Object.keys(permissionsPage).length === 0 || !permissionsPage[requiredPermision]) {
@@ -40,11 +39,6 @@ export const Users = () => {
     }
     
     const { resUsers, isLoading, error, updateStatus, updatePassword, handleMutationState } = useUsers();
-    const handleErros = {
-        403: () => refetch(),
-        401: (error) => kickOut(null),
-      }
-    
     const handleUpdateStatus = async (row, status) => {
         updateStatus.mutate(
             { id_user: row.id_user, status },
@@ -59,18 +53,7 @@ export const Users = () => {
                     });
                     navigate("/admin/users");
                 },
-                    onError: (err) => {
-                        Swal.fire({
-                            icon: "error",
-                            title: "Error",
-                            text: err.message,
-                        }).then(() => {
-                            if(handleErros[err?.status]){
-                                handleErros[err.status](err);
-                            }
-                        
-                    });
-                },
+                onError: (error) => handleGlobalError(error),
             }
         );
     };
@@ -107,18 +90,8 @@ export const Users = () => {
     ]
 
     if(error  && !isLoading){ 
-        Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: error?.message,
-            }).then((result) => {
-                if(result.isConfirmed){
-                    if(handleErros[error?.status]){
-                        handleErros[error.status](error);
-                    }
-                    handleMutationState(false);
-                }
-            });
+        handleGlobalError(error);
+        handleMutationState(false);
     }
 
     return (
