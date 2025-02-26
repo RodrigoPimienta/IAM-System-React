@@ -19,9 +19,8 @@ export const UpdateUser = ({ title, permissionsPage }) => {
             title: "Error",
             text: "User not found",
             timer: 3000,
-        }).then(() => {
-            navigate("/admin/users");
-        });
+            willClose: () => navigate("/admin/modules"),
+          });
     }
 
     const handleUpdateUser = (formData) => {

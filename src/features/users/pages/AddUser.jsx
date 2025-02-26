@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router";
+
 import Swal from "sweetalert2";
 import { useError } from "../../../hooks/";
 import { Loading , CustomForm} from "../../../components";
@@ -37,7 +38,7 @@ export const AddUser =({ title, permissionsPage }) => {
           actionsHeader={[]}
           fields={[
             { key: "name", input: "input", type: "text", label: "Name", placeholder: "Enter name", required: true },
-            { key: "email", input: "input", type: "email", label: "Email", placeholder: "Enter email", required: false },
+            { key: "email", input: "input", type: "email", label: "Email", placeholder: "Enter email", required: true },
             { key: "password", input: "input", type: "password", label: "Password", placeholder: "Enter password", required: true },
             { key: "password_confirmation", input: "input", type: "password", label: "Password confirmation", placeholder: "Enter password", required: true, validation: "same:password" },
             {

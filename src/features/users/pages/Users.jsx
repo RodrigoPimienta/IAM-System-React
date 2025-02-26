@@ -21,8 +21,8 @@ import { statusMap } from '../constants';
                         text: "Status updated successfully",
                         showConfirmButton: true,
                         timer: 4000,
+                        willClose: () => refetch(),
                     });
-                    navigate("/admin/users");
                 },
                 onError: (error) => handleGlobalError(error),
             }

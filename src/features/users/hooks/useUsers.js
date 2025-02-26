@@ -65,7 +65,6 @@ export function useUsers({ enabled = true } = {}) {
         onMutate: () => handleMutationState(true),
         onSuccess: () => {
             handleMutationState(false);
-            refetch();
         },
         onError: (err) => handleMutationState(false, err),
     });
@@ -84,7 +83,7 @@ export function useUsers({ enabled = true } = {}) {
     let newError = error || errorUsers;
 
     return {
-        resUsers, isLoading: loading, error:newError,
+        resUsers, isLoading: loading, error:newError, refetch,
         postUser, editUser, updateStatus, updatePassword, handleMutationState
     };
 };
