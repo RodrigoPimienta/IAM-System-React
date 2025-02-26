@@ -1,37 +1,13 @@
-const mapModules = (data) => {
-    return data.map((profile) => {
-        return {
-        id: profile.id,
-        name: profile.name,
-        status: profile.status,
-        };
-    });
-}
+import { fetcher } from "../../../services/fetcher";
 
-const getModulesAPI = async () => {
+export const getModules = async (token) => fetcher("http://localhost:8000/api/modules", token);
 
-    // dormir 2 segundos
+export const createModule = async (token,userData) => 
+    fetcher("http://localhost:8000/api/modules",token, { method: "POST", body: JSON.stringify(userData) });
 
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+export const updateModule = async (token,id, userData) => 
+    fetcher(`http://localhost:8000/api/modules/${id}`,token, { method: "PUT", body: JSON.stringify(userData) });
 
-    try {
-        const response = await fetch(`http://localhost:5173/src/mocks/modules.json`);
-        const data = await response.json();
-        return mapModules(data);
-    } catch (e) {
-        throw new Error("Error en paginateProducts");
-    }
-}
+export const updateModuleStatus = async (token,id, status) => 
+    fetcher(`http://localhost:8000/api/modules/${id}/status`,token, { method: "PATCH", body: JSON.stringify({ status }) });
 
-const getModulAPI = async (id) => {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    try {
-        const response = await fetch(`http://localhost:5173/src/mocks/modules.json`);
-        const data = await response.json();
-        return mapModules(data).find((module) => module.id === id);
-    } catch (e) {
-        throw new Error("Error en getModulAPI");
-    }
-}
-
-export { getModulesAPI, getModulAPI }; 
