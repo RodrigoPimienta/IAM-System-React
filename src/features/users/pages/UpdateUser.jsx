@@ -1,24 +1,15 @@
 import { useNavigate, useParams  } from "react-router";
-import { usePermissions, useError } from "../../../hooks/";
+import Swal from "sweetalert2";
+import { useError } from "../../../hooks/";
 import { Loading , CustomForm} from "../../../components";
 import { useUsers } from "../hooks/useUsers";
-import Swal from "sweetalert2";
 
 
-const moduleKey = "users";
-const requiredPermision = 'update';
-
-export const UpdateUser = () => {
+export const UpdateUser = ({ title, permissionsPage }) => {
     const navigate = useNavigate();
     // Obtener el id del usuario de la URL
     const { id_user } = useParams();
-    const { permissions } = usePermissions();
     const { handleGlobalError } = useError();
-    const permissionsPage = permissions[moduleKey]?.permissions || {};
-    if (Object.keys(permissionsPage).length === 0 || !permissionsPage[requiredPermision]) {
-      navigate('/admin/users');
-      return <Loading />;
-    }
     const {editUser, resUsers, isLoading} = useUsers();
     const user = resUsers.find((user) => user.id_user == id_user);
 
@@ -55,7 +46,7 @@ export const UpdateUser = () => {
       <>
        {isLoading && <Loading />}
         <CustomForm
-          title="Update user"
+          title={title}
           permissionsPage={permissionsPage}
           actionsHeader={[]}
           fields={[

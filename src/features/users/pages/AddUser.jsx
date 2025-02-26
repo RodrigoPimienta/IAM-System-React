@@ -1,22 +1,13 @@
 import { useNavigate } from "react-router";
-import { usePermissions, useError } from "../../../hooks/";
+import Swal from "sweetalert2";
+import { useError } from "../../../hooks/";
 import { Loading , CustomForm} from "../../../components";
 import { useUsers } from "../hooks/useUsers";
-import Swal from "sweetalert2";
 
-
-const moduleKey = "users";
-const requiredPermision = 'create';
-
-export const AddUser = () => {
+export const AddUser =({ title, permissionsPage }) => {
     const navigate = useNavigate();
-    const { permissions } = usePermissions();
     const { handleGlobalError } = useError();
-    const permissionsPage = permissions[moduleKey]?.permissions || {};
-    if (Object.keys(permissionsPage).length === 0 || !permissionsPage[requiredPermision]) {
-        navigate('/admin/users');
-        return <Loading />;
-    }
+
     const {postUser, isLoading} = useUsers({enabled: false});
 
     const handleAddUser = (formData) => {
@@ -41,7 +32,7 @@ export const AddUser = () => {
       <>
        {isLoading && <Loading />}
         <CustomForm
-          title="Add user"
+          title={title}
           permissionsPage={permissionsPage}
           actionsHeader={[]}
           fields={[
