@@ -1,15 +1,12 @@
+// main.jsx
 import { StrictMode } from 'react';
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route } from "react-router";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query"; // 🔹 Importar React Query
+import { BrowserRouter, } from "react-router";
+import { QueryClientProvider } from "@tanstack/react-query";
 import './styles/index.css';
 import './styles/app.css';
-import { AuthProvider, PermissionsProvider, ErrorProvider } from './context/index';
-import { PublicLayout, AdminLayout, ProtectedRoute, Login } from './layouts/index';
-import { HomePublic, Users, Profiles, Modules, ModulesRols, ModulesPermissions, HomePrivate, AddUser, UpdateUser } from './pages/index';
-
-// 🔹 Crear un cliente de React Query
-const queryClient = new QueryClient();
+import { AuthProvider } from './context/index';
+import { AppRoutes, queryClient } from './routes'; // Importa AppRoutes y queryClient
 
 const root = document.getElementById("root");
 
@@ -18,37 +15,7 @@ ReactDOM.createRoot(root).render(
     <StrictMode>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
-          <Routes>
-            {/* Rutas públicas */}
-            <Route path="/" element={<PublicLayout />}>
-              <Route index element={<HomePublic />} />
-              <Route path="home" element={<HomePublic />} />
-              <Route path="login" element={<Login />} />
-            </Route>
-
-            {/* Rutas protegidas (dentro del AdminLayout) */}
-            <Route
-              path="/admin"
-              element={
-                <PermissionsProvider>
-                  <ErrorProvider> {/* Agrega ErrorProvider aquí */}
-                    <ProtectedRoute>
-                      <AdminLayout />
-                    </ProtectedRoute>
-                  </ErrorProvider>
-                </PermissionsProvider>
-              }
-            >
-              <Route index element={<HomePrivate />} />
-              <Route path="users" element={<Users />} />
-              <Route path="users/add" element={<AddUser />} />
-              <Route path="users/:id_user/update" element={<UpdateUser />} />
-              <Route path="profiles" element={<Profiles />} />
-              <Route path="modules" element={<Modules />} />
-              <Route path="modules/:moduleId/rols" element={<ModulesRols />} />
-              <Route path="modules/:moduleId/permissions" element={<ModulesPermissions />} />
-            </Route>
-          </Routes>
+          <AppRoutes />
         </BrowserRouter>
       </QueryClientProvider>
     </StrictMode>
