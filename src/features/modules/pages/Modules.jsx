@@ -1,93 +1,88 @@
-import { useRef } from "react"
-import { useNavigate } from "react-router";
-import { CustomTable, CustomActions, Loading, Error } from "../../../components/index"
-import permissionsDefault  from '../../../mocks/permissions.json'
+import { useNavigate } from 'react-router';
+import Swal from "sweetalert2";
+import { useError } from "../../../hooks/";
+import { Loading , CustomPage} from "../../../components";
 import { useModules } from "../hooks/useModules";
+import { statusMap } from '../constants';
+ 
+  export const Modules = ({ title, permissionsPage }) => {
+    const navigate = useNavigate();
+    const { handleGlobalError } = useError();
 
-const statusMap = {
-    1: 'Active',
-    2: 'Inactive',
-    3: 'Suspended'
-};
+    const { resModules,refetch, isLoading, error, updateStatus, handleMutationState } = useModules();
+    const handleUpdateStatus = async (row, status) => {
+        updateStatus.mutate(
+            { id_module: row.id_module, status },
+            {
+                onSuccess: async () => {
+                    await Swal.fire({
+                        icon: "success",
+                        title: "Success",
+                        text: "Status updated successfully",
+                        showConfirmButton: true,
+                        timer: 4000,
+                        willClose: () => refetch(),
+                    });
+                },
+                onError: (error) => handleGlobalError(error),
+            }
+        );
+    };
 
-const columns = [
-    { header: 'Name', key: 'name' },
-    {
-        header: 'Status',
-        key: 'status',
-        render: (row) => statusMap[row.status] || 'Unknown'
-    },
-    {
-        header: 'Actions',
-        key: 'actions',
-        render: (row, ActionsComponent) => <ActionsComponent row={row} />
+
+    if(error  && !isLoading){ 
+        handleGlobalError(error);
+        handleMutationState(false);
     }
-]
-
-export const Modules = () => {
-    let navigate = useNavigate();
-
-    const firstLoad = useRef(true);
-
-    const { modules, loading, errorModules, getModules, activateModule, deactivateModule, editModule } = useModules()
-
-    if (firstLoad.current) {
-        getModules();
-        firstLoad.current = false;
-    }
-    
-    
-    const Actions = [
-        {
-            key: 'activate',
-            Name: 'Activate',
-            Condition: (row) => row.status !== 1,
-            Handle: (id) => activateModule(id)
-        },
-        {
-            key: 'inactivate',
-            Name: 'Inactivate',
-            Condition: (row) => row.status === 1,
-            Handle: (id) => deactivateModule(id)
-        },
-        {
-            key: 'edit',
-            Name: 'Edit',
-            Condition: (row) => true,
-            Handle: (id) => editModule(id)
-        },
-        // butoton to see the permissions of the module
-        {
-            key: 'viewPermissions',
-            Name: 'Permissions',
-            Condition: (row) => true,
-            Handle: (id) => navigate(`/catalogs/modules/${id}/permissions`)
-        },
-        // buton to see the roles of the module
-        {
-            key: 'viewRoles',
-            Name: 'Roles',
-            Condition: (row) => true,
-            Handle: (id) => navigate(`/catalogs/modules/${id}/rols`)
-        }
-    ]
-
-    if (loading) return <Loading />;
-    if (errorModules) return <Error message={errorModules} />;
 
     return (
-      <div className="container-fluid">
-          <h2>Modules</h2>
-          <CustomTable 
-                columns={columns} 
-                rows={modules} 
-                ActionsComponent={(props) => (
-                    <CustomActions
-                        {...props}
-                        permissions={permissionsDefault}
-                        actions={Actions}
-                    />
-                )} />
-      </div>
-    )
-}
+      <>
+        {isLoading && <Loading />}
+
+        <div className="container-fluid">
+          <CustomPage 
+              title={title} 
+              permissionsPage={permissionsPage} 
+              rows={resModules || []} 
+              actionsHeader={[
+                  {key: 'create', label: 'New module', handle: () => {navigate('/admin/modules/add')}},
+              ]} 
+              actions={[
+                  {
+                      key: 'update',
+                      label: 'Edit',
+                      condition: (row) => true,
+                      handle: (row) => navigate(`/admin/modules/${row.id_module}/update`)
+                  },
+                  {
+                      key: 'updateStatus',
+                      label: 'Disable',
+                      condition: (row) => row.status === 1,
+                      handle: (row) => handleUpdateStatus(row, row.status === 1 ? 0 : 1),
+                  },
+                  {
+                      key: 'updateStatus',
+                      label: 'Enable',
+                      condition: (row) => row.status === 0,
+                      handle: (row) => handleUpdateStatus(row, row.status === 1 ? 0 : 1),
+                  }
+              ]} 
+              columns={[
+                  { header: 'Name', key: 'name' },
+                  { header: 'Key', key: 'key' },
+                  {
+                      header: 'Status',
+                      key: 'status',
+                      render: (row) => statusMap[row.status] || 'Unknown'
+                  },
+                  {
+                      header: 'Actions',
+                      key: 'actions',
+                      render: (row, ActionsComponent) => <ActionsComponent row={row} />
+                  }
+              ]} 
+          />
+        </div>
+      </>
+    );
+};
