@@ -32,8 +32,7 @@ export const UpdateUser = ({ title, permissionsPage }) => {
                   text: "User updated successfully",
                   showConfirmButton: true,
                   timer: 4000,
-              }).then(() => {
-                  navigate("/admin/users");
+                  willClose: () => navigate("/admin/users"),
               });
           },
           onError: (error) => handleGlobalError(error),

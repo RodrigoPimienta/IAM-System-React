@@ -20,8 +20,7 @@ export const AddUser =({ title, permissionsPage }) => {
                   text: "User added successfully",
                   showConfirmButton: true,
                   timer: 4000,
-              }).then(() => {
-                  navigate("/admin/users");
+                  willClose: () => navigate("/admin/users"),
               });
           },
           onError: (error) => handleGlobalError(error),
