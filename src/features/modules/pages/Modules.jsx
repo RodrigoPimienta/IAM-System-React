@@ -2,8 +2,8 @@ import { useNavigate } from 'react-router';
 import Swal from "sweetalert2";
 import { useError } from "../../../hooks/";
 import { Loading , CustomPage} from "../../../components";
-import { useModules } from "../hooks/useModules";
-import { statusMap } from '../constants';
+import { useModules } from "../hooks";
+import { statusMapModules as statusMap } from '../constants';
  
   export const Modules = ({ title, permissionsPage }) => {
     const navigate = useNavigate();
@@ -65,6 +65,12 @@ import { statusMap } from '../constants';
                       label: 'Enable',
                       condition: (row) => row.status === 0,
                       handle: (row) => handleUpdateStatus(row, row.status === 1 ? 0 : 1),
+                  },
+                  {
+                    key: 'showPermissions',
+                    label: 'Show Permissions',
+                    condition: (row) => true,
+                    handle: (row) => navigate(`/admin/modules/${row.id_module}/permissions`)
                   }
               ]} 
               columns={[

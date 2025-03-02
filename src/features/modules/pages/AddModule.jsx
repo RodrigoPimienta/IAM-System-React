@@ -20,8 +20,7 @@ export const AddModule =({ title, permissionsPage }) => {
                   text: "Module added successfully",
                   showConfirmButton: true,
                   timer: 4000,
-              }).then(() => {
-                  navigate("/admin/modules");
+                  willClose: () => navigate("/admin/modules"),
               });
           },
           onError: (error) => handleGlobalError(error),
